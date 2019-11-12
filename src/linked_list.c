@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/star.h"
 
 /*Linked list for shots,stars and spaceships*/
 
 /*different types*/
 typedef union{
-	int i;
-	char c;
+	Star star;
 }Data;
 
 /*struct of a list element*/
@@ -87,12 +87,17 @@ void linked_list_free(Linked_list * linked_list){
 	linked_list->last=NULL;
 }
 
-
-
-void linked_list_show_int(Linked_list linked_list){
+void linked_list_show_star(Linked_list linked_list){
 	Element * last = linked_list.last;
 	while(last->null==0){
-		printf("%d\n",last->data.i);
+		printf("star x:%d y:%d size:%d speed:%d\n",last->data.star.x,last->data.star.y,last->data.star.size,last->data.star.speed);
+		last=last->prev;
+	}
+}
+
+void linked_list_stars_move_down(Linked_list * stars){
+	Element * last = stars->last;
+	while(last->null==0){
 		last=last->prev;
 	}
 }

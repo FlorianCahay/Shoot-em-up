@@ -1,9 +1,10 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include "../include/star.h"
+
 typedef union{
-	int i;
-	char c;
+	Star star;
 }Data;
 
 typedef struct ElementL{
@@ -28,6 +29,6 @@ void linked_list_clear(Linked_list * linked_list);
 
 void linked_list_free(Linked_list * linked_list);
 
-void linked_list_show_int(Linked_list linked_list);
+void linked_list_show_star(Linked_list linked_list);
 
 #endif
