@@ -17,10 +17,15 @@ void open_new_window() {
 MLV_Image* load_image(const char *image_name) {
 	return MLV_load_image(image_name);
 }
+/* Close and free image in memory. */
 void close_image(MLV_Image *image) {
 	MLV_free_image(image);
 }
-/* Close window. */
+/* Close and free window. */
 void close_window() {
 	MLV_free_window();
+}
+void display_fps() {
+	int fps = MLV_get_frame_rate();
+	MLV_draw_text(10, 10, "FPS: %d", MLV_COLOR_RED, fps);
 }
