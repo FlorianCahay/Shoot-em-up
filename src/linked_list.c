@@ -98,6 +98,7 @@ void linked_list_show_star(Linked_list linked_list){
 void linked_list_stars_move_down(Linked_list * stars){
 	Element * last = stars->last;
 	while(last->null==0){
+		star_move_down(&last->data.star);
 		last=last->prev;
 	}
 }

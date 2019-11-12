@@ -8,8 +8,10 @@ int main(int argc, char const *argv[])
 	Data data;
 	data.star=star_create(1,1,1,1);
 	linked_list_append(&stars,data);
+	linked_list_append(&stars,data);
 	linked_list_show_star(stars);
-	star_move_down(&stars.last->data.star);
+	linked_list_stars_move_down(&stars);
+	linked_list_stars_move_down(&stars);
 	linked_list_show_star(stars);
 	linked_list_free(&stars);
 
