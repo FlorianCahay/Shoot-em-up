@@ -1,3 +1,4 @@
+/*struct defining a star*/
 typedef struct {
 	int x;
 	int y;
@@ -5,6 +6,7 @@ typedef struct {
 	int speed;
 } Star;
 
+/*return a star with all her properties set*/
 Star star_create(int x, int y, int size, int speed){
 	Star star = {};
 	star.x=x;
@@ -14,6 +16,7 @@ Star star_create(int x, int y, int size, int speed){
 	return star;
 }
 
+/*move down a star and return 1 if the star is out of the screen, if not return 0*/
 int star_move_down(Star * star,int window_height){
 	star->y+=star->speed*1;
 	if(star->y>window_height){

@@ -13,7 +13,7 @@ typedef union{
 typedef struct ElementL{
 	struct ElementL * prev;
 	Data data;
-	int null;
+	int null; /*null : 1, notnull :0*/
 } Element;
 
 /*list struct with the top element*/
@@ -87,6 +87,7 @@ void linked_list_free(Linked_list * linked_list){
 	linked_list->last=NULL;
 }
 
+/*print informations of each star*/
 void linked_list_show_star(Linked_list linked_list){
 	Element * last = linked_list.last;
 	while(last->null==0){
@@ -95,6 +96,7 @@ void linked_list_show_star(Linked_list linked_list){
 	}
 }
 
+/*move all stars down*/
 void linked_list_stars_move_down(Linked_list * stars,int window_height){
 	Element * last = stars->last;
 	while(last->null==0){
