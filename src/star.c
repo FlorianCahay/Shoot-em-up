@@ -14,6 +14,10 @@ Star star_create(int x, int y, int size, int speed){
 	return star;
 }
 
-void star_move_down(Star * star){
+int star_move_down(Star * star,int window_height){
 	star->y+=star->speed*1;
+	if(star->y>window_height){
+		return 1;
+	}
+	return 0;
 }

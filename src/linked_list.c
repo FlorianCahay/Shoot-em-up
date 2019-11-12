@@ -95,10 +95,12 @@ void linked_list_show_star(Linked_list linked_list){
 	}
 }
 
-void linked_list_stars_move_down(Linked_list * stars){
+void linked_list_stars_move_down(Linked_list * stars,int window_height){
 	Element * last = stars->last;
 	while(last->null==0){
-		star_move_down(&last->data.star);
+		if(star_move_down(&last->data.star,window_height)){
+			linked_list_remove(last);
+		}
 		last=last->prev;
 	}
 }

@@ -10,6 +10,6 @@ typedef struct {
 
 Star star_create(int x, int y, int size, int speed);
 
-void star_move_down(Star * star);
+int star_move_down(Star * star,int window_height);
 
 #endif
