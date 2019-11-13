@@ -6,6 +6,7 @@
 #include "../include/main.h"
 #include "../include/stars.h"
 #include "../include/spaceship.h"
+#include "../include/events.h"
 
 #define BILLION 1E9
 
@@ -13,6 +14,7 @@ int main(int argc, char const *argv[])
 {
 	MLV_Keyboard_button symbol = MLV_KEYBOARD_NONE;
 	MLV_Button_state state;
+	MLV_Event event;
 
 	open_new_window();
 	MLV_Image *image_star, *image_heart, *image_spaceship;
@@ -23,6 +25,7 @@ int main(int argc, char const *argv[])
 	MLV_resize_image(image_heart, 30, 30);
 	MLV_resize_image_with_proportions(image_spaceship, get_spaceship_width(), get_spaceship_height());
 	Linked_list stars = linked_list_create();
+	Linked_list events = linked_list_create();
 	int quit = 0, health = 3;
 
 	MLV_change_frame_rate(120);
@@ -37,11 +40,18 @@ int main(int argc, char const *argv[])
 		display_one_frame(image_star, image_heart, image_spaceship, spaceship, stars, health);
 
 		/* Get event */
-		MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
+		event=MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
 
-		/* Event resolution */
-		if (symbol != MLV_KEYBOARD_NONE) {
-			switch (symbol) {
+		if(event==MLV_KEY){
+			if (state==MLV_PRESSED) {
+			events_add_event(&events,symbol);
+			}else if (state==MLV_RELEASED) {
+				events_remove_event(&events,symbol);
+			}
+		}
+		Element * last_event = events.last;
+		while(last_event->null==0){
+			switch (last_event->data.key) {
 				case MLV_KEYBOARD_LEFT :
 					spaceship_move_left(&spaceship);
 					break;
@@ -60,12 +70,8 @@ int main(int argc, char const *argv[])
 				default :
 					break;
 			}
-			if (state == MLV_RELEASED) {
-				symbol = MLV_KEYBOARD_NONE;
-			}
+			last_event=last_event->prev;
 		}
-		/*show coordinates of the spaceship*/
-		/*spaceship_show(spaceship);*/
 
 		/*add a star to the stars list*/
 		stars_create_star(&stars, get_window_width());
@@ -78,6 +84,7 @@ int main(int argc, char const *argv[])
 	}
 
 	linked_list_free(&stars);
+	linked_list_free(&events);
 	close_image(image_star);
 	close_image(image_heart);
 	close_image(image_spaceship);

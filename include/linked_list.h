@@ -5,6 +5,7 @@
 
 /* Different types. */
 typedef union{
+	MLV_Keyboard_button key;
 	Star star;
 } Data;
 
