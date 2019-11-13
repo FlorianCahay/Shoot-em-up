@@ -1,5 +1,6 @@
 #include <MLV/MLV_all.h>
 #include <stdio.h>
+#include "../include/linked_list.h"
 
 /* Return window height. */
 int get_window_height() {
@@ -25,7 +26,31 @@ void close_image(MLV_Image *image) {
 void close_window() {
 	MLV_free_window();
 }
+
+
+
+/* Display number of FPS. */
 void display_fps() {
 	int fps = MLV_get_frame_rate();
 	MLV_draw_text(10, 10, "FPS: %d", MLV_COLOR_RED, fps);
+}
+void display_health_bar(MLV_Image *image, int health) {
+	int i;
+	for (i = 0; i < health; i++) {
+		MLV_draw_image(image, 30*i, get_window_height()-30);
+	}
+}
+void display_stars(Linked_list linked_list, MLV_Image *image_star) {
+	Element *last = linked_list.last;
+	while (last->null == 0){
+		MLV_draw_image(image_star, last->data.star.x, last->data.star.y);
+		last=last->prev;
+	}
+}
+
+void display_one_frame(MLV_Image *image_star, MLV_Image *image_heart, Linked_list linked_list, int health) {
+	display_stars(linked_list, image_star);
+	display_fps();
+	display_health_bar(image_heart, health);
+	MLV_actualise_window();
 }

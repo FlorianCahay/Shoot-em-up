@@ -21,9 +21,11 @@ int main(int argc, char const *argv[])
 	MLV_Button_state state;
 
 	open_new_window();
-	MLV_Image *image_star;
+	MLV_Image *image_star, *image_heart;
 	image_star = MLV_load_image("src/media/star.png");
+	image_heart = MLV_load_image("src/media/heart.png");
 	MLV_resize_image(image_star, 30, 30);
+	MLV_resize_image(image_heart, 30, 30);
 	Linked_list stars = linked_list_create();
 	int quit = 0;
 
@@ -36,9 +38,7 @@ int main(int argc, char const *argv[])
 		*/
 
 		/* Display of the current frame */
-		display_stars(stars, image_star);
-		display_fps();
-		MLV_actualise_window();
+		display_one_frame(image_star, image_heart, stars, 3);
 
 		/* Get event */
 		event = MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
@@ -69,16 +69,9 @@ int main(int argc, char const *argv[])
 	MLV_wait_seconds(2);
 	linked_list_free(&stars);
 	close_image(image_star);
+	close_image(image_heart);
 	close_window();
 	return 0;
-}
-
-void display_stars(Linked_list linked_list, MLV_Image *image_star) {
-	Element *last = linked_list.last;
-	while (last->null == 0){
-		MLV_draw_image(image_star, last->data.star.x, last->data.star.y);
-		last=last->prev;
-	}
 }
 
 void create_scrolling_star(Linked_list *stars, MLV_Image *image_star) {
