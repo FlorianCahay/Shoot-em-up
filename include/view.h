@@ -1,6 +1,8 @@
 #ifndef VIEW_H_INCLUDED
 #define VIEW_H_INCLUDED
 
+#include "../include/linked_list.h"
+
 int get_window_height();
 int get_window_width();
 void open_new_window();

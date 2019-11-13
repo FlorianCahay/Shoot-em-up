@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <MLV/MLV_all.h>
-#include "../include/linked_list.h"
 #include "../include/view.h"
 #include "../include/main.h"
+#include "../include/stars.h"
+#include "../include/spaceship.h"
 
 #define BILLION 1E9
-
-
 
 int main(int argc, char const *argv[])
 {
@@ -16,7 +15,6 @@ int main(int argc, char const *argv[])
 	struct timespec request_start, request_end;
 	double accum;*/
 
-	MLV_Event event;
 	MLV_Keyboard_button symbol = MLV_KEYBOARD_NONE;
 	MLV_Button_state state;
 
@@ -31,6 +29,8 @@ int main(int argc, char const *argv[])
 
 	MLV_change_frame_rate(120);
 
+	Spaceship spaceship = spaceship_create(get_window_width()/2+get_spaceship_width()/2,get_window_height()/2+get_spaceship_height()/2);
+
 	/* Main loop */
 	while (!quit) {
 		/* Start frame 
@@ -41,20 +41,41 @@ int main(int argc, char const *argv[])
 		display_one_frame(image_star, image_heart, stars, 3);
 
 		/* Get event */
-		event = MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
+		MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
 
 		/* Event resolution */
-		if (event == MLV_KEY) {
-			if (state == MLV_PRESSED) {
-				if (symbol == MLV_KEYBOARD_ESCAPE) {
+		if (symbol!=MLV_KEYBOARD_NONE) {
+			switch(symbol){
+				case MLV_KEYBOARD_LEFT :
+					spaceship_move_left(&spaceship);
 					break;
-				}
+				case MLV_KEYBOARD_RIGHT :
+					spaceship_move_right(&spaceship,get_window_width());
+					break;
+				case MLV_KEYBOARD_UP :
+					spaceship_move_up(&spaceship);
+					break;
+				case MLV_KEYBOARD_DOWN :
+					spaceship_move_down(&spaceship,get_window_height());
+					break;
+				case MLV_KEYBOARD_ESCAPE :
+					quit=1;
+					break;
+				default :
+					break;
+			}
+			if(state==MLV_RELEASED){
+				symbol=MLV_KEYBOARD_NONE;
 			}
 		}
-		create_scrolling_star(&stars, image_star);
+		/*show coordinates of the spaceship*/
+		spaceship_show(spaceship);
+
+		/*add a star to the stars list*/
+		stars_create_star(&stars,get_window_width());
 
 		/* Moves of the entities on the board */
-		linked_list_stars_move_down(&stars, get_window_height());
+		stars_move_down(&stars, get_window_height());
 
 		/* End frame 
 		clock_gettime(CLOCK_REALTIME, &request_end);
@@ -65,26 +86,9 @@ int main(int argc, char const *argv[])
 
 		MLV_delay_according_to_frame_rate();
 	}
-	
-	MLV_wait_seconds(2);
 	linked_list_free(&stars);
 	close_image(image_star);
 	close_image(image_heart);
 	close_window();
 	return 0;
-}
-
-void create_scrolling_star(Linked_list *stars, MLV_Image *image_star) {
-	if (rand()%4 == 0) {
-		int random_x = MLV_get_random_integer(-30, get_window_width());
-		int random_speed = MLV_get_random_integer(1, 5);
-		/*
-		int random_size = MLV_get_random_integer(20, 30);
-		MLV_resize_image(image_star, random_size, random_size);
-		*/
-		Star star = star_create(random_x, -30, 30, random_speed);
-		Data data;
-		data.star = star;
-		linked_list_append(stars, data);
-	}
 }

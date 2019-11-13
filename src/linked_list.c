@@ -86,23 +86,3 @@ void linked_list_free(Linked_list * linked_list){
 	free(linked_list->last);
 	linked_list->last=NULL;
 }
-
-/*print informations of each star*/
-void linked_list_show_star(Linked_list linked_list){
-	Element * last = linked_list.last;
-	while(last->null==0){
-		printf("star x:%d y:%d size:%d speed:%d\n",last->data.star.x,last->data.star.y,last->data.star.size,last->data.star.speed);
-		last=last->prev;
-	}
-}
-
-/*move all stars down*/
-void linked_list_stars_move_down(Linked_list * stars,int window_height){
-	Element * last = stars->last;
-	while(last->null==0){
-		if(star_move_down(&last->data.star,window_height)){
-			linked_list_remove(last);
-		}
-		last=last->prev;
-	}
-}

@@ -29,8 +29,4 @@ void linked_list_clear(Linked_list * linked_list);
 
 void linked_list_free(Linked_list * linked_list);
 
-void linked_list_show_star(Linked_list linked_list);
-
-void linked_list_stars_move_down(Linked_list * stars,int window_height);
-
 #endif
