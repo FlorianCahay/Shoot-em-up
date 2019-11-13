@@ -1,22 +1,23 @@
-#ifndef SPACESHIP_H
-#define SPACESHIP_H
+#ifndef SPACESHIP_H_INCLUDED
+#define SPACESHIP_H_INCLUDED
 
+/* Struct defining Spaceship */
 typedef struct{
 	int x;
 	int y;
-}Spaceship;
+} Spaceship;
 
 Spaceship spaceship_create(int x, int y);
 
-void spaceship_move(int * point,int value,int speed);
+void spaceship_move(int *point, int value, int speed);
 
-void spaceship_move_up(Spaceship * spaceship);
+void spaceship_move_up(Spaceship *spaceship);
 
-void spaceship_move_down(Spaceship * spaceship,int window_height);
+void spaceship_move_down(Spaceship *spaceship, int window_height);
 
-void spaceship_move_left(Spaceship * spaceship);
+void spaceship_move_left(Spaceship *spaceship);
 
-void spaceship_move_right(Spaceship * spaceship,int window_width);
+void spaceship_move_right(Spaceship *spaceship, int window_width);
 
 void spaceship_show(Spaceship spaceship);
 
