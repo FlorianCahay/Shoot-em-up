@@ -1,12 +1,15 @@
 #ifndef LINKED_LIST_H_INCLUDED
 #define LINKED_LIST_H_INCLUDED
 
+#include <MLV/MLV_all.h>
 #include "../include/star.h"
+#include "../include/shot.h"
 
 /* Different types. */
 typedef union{
 	MLV_Keyboard_button key;
 	Star star;
+	Shot shot;
 } Data;
 
 /* Struct of a list element. */

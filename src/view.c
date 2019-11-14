@@ -53,10 +53,19 @@ void display_stars(Linked_list linked_list, MLV_Image *image_star) {
 void display_spaceship(MLV_Image *image_spaceship, Spaceship spaceship) {
 	MLV_draw_image(image_spaceship, spaceship.x, spaceship.y);
 }
+/* Display all shots. */
+void display_shots(MLV_Image *image_shot, Linked_list linked_list) {
+	Element *last = linked_list.last;
+	while (last->null == 0) {
+		MLV_draw_image(image_shot, last->data.shot.x - 15, last->data.shot.y);
+		last = last->prev;
+	}
+}
 /* Display all items in the window and actualize it. */
-void display_one_frame(Images images, Spaceship spaceship, Linked_list linked_list, int health) {
+void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, int health) {
 	MLV_clear_window(MLV_COLOR_BLACK);
-	display_stars(linked_list, images.star);
+	display_stars(stars, images.star);
+	display_shots(images.shot_ally, shots);
 	display_spaceship(images.spaceship, spaceship);
 	display_fps();
 	display_health_bar(images.heart, health);

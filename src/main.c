@@ -7,6 +7,7 @@
 #include "../include/stars.h"
 #include "../include/spaceship.h"
 #include "../include/events.h"
+#include "../include/shot.h"
 
 #define BILLION 1E9
 
@@ -17,12 +18,20 @@ int main(int argc, char const *argv[])
 	MLV_Event event;
 
 	open_new_window();
-	Images images = {MLV_load_image("src/media/star.png"),MLV_load_image("src/media/spaceship.png"),MLV_load_image("src/media/heart.png"),MLV_load_image("src/media/shot_ally.png"),MLV_load_image("src/media/shot_enemy.png"),MLV_load_image("src/media/enemy.png")};
+	Images images = { 	MLV_load_image("src/media/star.png"),
+						MLV_load_image("src/media/spaceship.png"),
+						MLV_load_image("src/media/heart.png"),
+						MLV_load_image("src/media/shot_ally.png"),
+						MLV_load_image("src/media/shot_enemy.png"),
+						MLV_load_image("src/media/enemy.png") };
+
 	MLV_resize_image(images.star, 30, 30);
 	MLV_resize_image(images.heart, 30, 30);
+	MLV_resize_image_with_proportions(images.shot_ally, 30, -1);
 	MLV_resize_image_with_proportions(images.spaceship, get_spaceship_width(), get_spaceship_height());
 	Linked_list stars = linked_list_create();
 	Linked_list events = linked_list_create();
+	Linked_list shots = linked_list_create();
 	int quit = 0, health = 3;
 
 	MLV_change_frame_rate(120);
@@ -34,20 +43,20 @@ int main(int argc, char const *argv[])
 		/* Start frame */
 
 		/* Display of the current frame */
-		display_one_frame(images, spaceship, stars, health);
+		display_one_frame(images, spaceship, stars, shots, health);
 
 		/* Get event */
-		event=MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
+		event = MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
 
-		if(event==MLV_KEY){
-			if (state==MLV_PRESSED) {
-			events_add_event(&events,symbol);
-			}else if (state==MLV_RELEASED) {
-				events_remove_event(&events,symbol);
+		if (event == MLV_KEY) {
+			if (state == MLV_PRESSED) {
+				events_add_event(&events, symbol);
+			} else if (state == MLV_RELEASED) {
+				events_remove_event(&events, symbol);
 			}
 		}
-		Element * last_event = events.last;
-		while(last_event->null==0){
+		Element *last_event = events.last;
+		while (last_event->null == 0) {
 			switch (last_event->data.key) {
 				case MLV_KEYBOARD_LEFT :
 					spaceship_move_left(&spaceship);
@@ -61,13 +70,16 @@ int main(int argc, char const *argv[])
 				case MLV_KEYBOARD_DOWN :
 					spaceship_move_down(&spaceship, get_window_height());
 					break;
+				case MLV_KEYBOARD_SPACE:
+					shots_create_shot(&shots, spaceship, get_spaceship_width());
+					break;
 				case MLV_KEYBOARD_ESCAPE :
 					quit = 1;
 					break;
 				default :
 					break;
 			}
-			last_event=last_event->prev;
+			last_event = last_event->prev;
 		}
 
 		/*add a star to the stars list*/
@@ -75,6 +87,7 @@ int main(int argc, char const *argv[])
 
 		/* Moves of the entities on the board */
 		stars_move_down(&stars, get_window_height());
+		shots_move(&shots, get_window_height());
 
 		/* End frame */
 		MLV_delay_according_to_frame_rate();

@@ -16,6 +16,7 @@ void close_image(MLV_Image *image);
 void display_fps();
 void display_health_bar(MLV_Image *image, int health);
 void display_stars(Linked_list linked_list, MLV_Image *image_star);
-void display_one_frame(Images images, Spaceship spaceship, Linked_list linked_list, int health);
+void display_shots(MLV_Image *image_shot, Linked_list linked_list);
+void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, int health);
 
 #endif
