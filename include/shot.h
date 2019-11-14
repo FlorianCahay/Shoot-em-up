@@ -10,7 +10,7 @@ typedef struct {
 } Shot;
 
 Shot shot_create(int x, int y, int speed);
-int shot_move(Shot *shot, int direction, int window_height);/*
-void shots_create_shot(Linked_list *shots, Spaceship spaceship);*/
+int shot_move(Shot *shot, int direction, int window_height);
+int get_shot_size();
 
 #endif

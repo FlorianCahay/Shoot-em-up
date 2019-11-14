@@ -8,6 +8,7 @@
 #include "../include/spaceship.h"
 #include "../include/events.h"
 #include "../include/shot.h"
+#include "../include/shots.h"
 
 #define BILLION 1E9
 
@@ -27,12 +28,12 @@ int main(int argc, char const *argv[])
 
 	MLV_resize_image(images.star, 30, 30);
 	MLV_resize_image(images.heart, 30, 30);
-	MLV_resize_image_with_proportions(images.shot_ally, 30, -1);
+	MLV_resize_image_with_proportions(images.shot_ally, get_shot_size(), -1);
 	MLV_resize_image_with_proportions(images.spaceship, get_spaceship_width(), get_spaceship_height());
 	Linked_list stars = linked_list_create();
 	Linked_list events = linked_list_create();
 	Linked_list shots = linked_list_create();
-	int quit = 0, health = 3;
+	int quit = 0, health = 3, timer=0;
 
 	MLV_change_frame_rate(120);
 
@@ -70,9 +71,12 @@ int main(int argc, char const *argv[])
 				case MLV_KEYBOARD_DOWN :
 					spaceship_move_down(&spaceship, get_window_height());
 					break;
-				case MLV_KEYBOARD_SPACE:
-					shots_create_shot(&shots, spaceship, get_spaceship_width());
-					break;
+				case MLV_KEYBOARD_SPACE :
+					if(timer==30){
+						shots_create_shot(&shots, spaceship, get_spaceship_width());
+						timer=0;	
+					}
+					break;	
 				case MLV_KEYBOARD_ESCAPE :
 					quit = 1;
 					break;
@@ -90,11 +94,15 @@ int main(int argc, char const *argv[])
 		shots_move(&shots, get_window_height());
 
 		/* End frame */
+		if(timer<30){
+			++timer;
+		}
 		MLV_delay_according_to_frame_rate();
 	}
 
 	linked_list_free(&stars);
 	linked_list_free(&events);
+	linked_list_free(&shots);
 	close_image(images.star);
 	close_image(images.spaceship);
 	close_image(images.heart);
