@@ -17,13 +17,10 @@ int main(int argc, char const *argv[])
 	MLV_Event event;
 
 	open_new_window();
-	MLV_Image *image_star, *image_heart, *image_spaceship;
-	image_star = MLV_load_image("src/media/star.png");
-	image_heart = MLV_load_image("src/media/heart.png");
-	image_spaceship = MLV_load_image("src/media/spaceship.png");
-	MLV_resize_image(image_star, 30, 30);
-	MLV_resize_image(image_heart, 30, 30);
-	MLV_resize_image_with_proportions(image_spaceship, get_spaceship_width(), get_spaceship_height());
+	Images images = {MLV_load_image("src/media/star.png"),MLV_load_image("src/media/spaceship.png"),MLV_load_image("src/media/heart.png"),MLV_load_image("src/media/shot_ally.png"),MLV_load_image("src/media/shot_enemy.png"),MLV_load_image("src/media/enemy.png")};
+	MLV_resize_image(images.star, 30, 30);
+	MLV_resize_image(images.heart, 30, 30);
+	MLV_resize_image_with_proportions(images.spaceship, get_spaceship_width(), get_spaceship_height());
 	Linked_list stars = linked_list_create();
 	Linked_list events = linked_list_create();
 	int quit = 0, health = 3;
@@ -37,7 +34,7 @@ int main(int argc, char const *argv[])
 		/* Start frame */
 
 		/* Display of the current frame */
-		display_one_frame(image_star, image_heart, image_spaceship, spaceship, stars, health);
+		display_one_frame(images, spaceship, stars, health);
 
 		/* Get event */
 		event=MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
@@ -85,9 +82,12 @@ int main(int argc, char const *argv[])
 
 	linked_list_free(&stars);
 	linked_list_free(&events);
-	close_image(image_star);
-	close_image(image_heart);
-	close_image(image_spaceship);
+	close_image(images.star);
+	close_image(images.spaceship);
+	close_image(images.heart);
+	close_image(images.shot_ally);
+	close_image(images.shot_enemy);
+	close_image(images.enemy);
 	close_window();
 
 	return 0;
