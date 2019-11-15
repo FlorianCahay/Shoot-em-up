@@ -7,10 +7,11 @@ typedef struct {
 	int x;
 	int y;
 	int speed;
+	int direction;
 } Shot;
 
-Shot shot_create(int x, int y, int speed);
-int shot_move(Shot *shot, int direction, int window_height);
+Shot shot_create(int x, int y, int speed, int direction);
+int shot_move(Shot *shot, int window_height);
 int get_shot_size();
 
 #endif

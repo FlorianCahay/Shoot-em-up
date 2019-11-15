@@ -54,10 +54,14 @@ void display_spaceship(MLV_Image *image_spaceship, Spaceship spaceship) {
 	MLV_draw_image(image_spaceship, spaceship.x, spaceship.y);
 }
 /* Display all shots. */
-void display_shots(MLV_Image *image_shot, Linked_list shots) {
+void display_shots(MLV_Image *image_shot_ally, MLV_Image *image_shot_enemy, Linked_list shots) {
 	Element *last = shots.last;
 	while (last->null == 0) {
-		MLV_draw_image(image_shot, last->data.shot.x - 15, last->data.shot.y);
+		if (last->data.shot.direction == 0) {
+			MLV_draw_image(image_shot_ally, last->data.shot.x - 15, last->data.shot.y);	
+		} else if (last->data.shot.direction == 1) {
+			MLV_draw_image(image_shot_enemy, last->data.shot.x - 15, last->data.shot.y);	
+		}
 		last = last->prev;
 	}
 }
@@ -74,7 +78,7 @@ void display_enemies(MLV_Image *image_enemy, Linked_list enemies) {
 void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, int health) {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
-	display_shots(images.shot_ally, shots);
+	display_shots(images.shot_ally, images.shot_enemy, shots);
 	display_spaceship(images.spaceship,spaceship);
 	display_enemies(images.enemy,enemies);
 	display_fps();

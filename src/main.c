@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <MLV/MLV_all.h>
 #include "../include/view.h"
 #include "../include/main.h"
@@ -10,8 +9,6 @@
 #include "../include/shot.h"
 #include "../include/shots.h"
 #include "../include/enemies.h"
-
-#define BILLION 1E9
 
 int main(int argc, char const *argv[])
 {
@@ -30,13 +27,14 @@ int main(int argc, char const *argv[])
 	MLV_resize_image(images.star, 30, 30);
 	MLV_resize_image(images.heart, 30, 30);
 	MLV_resize_image_with_proportions(images.shot_ally, get_shot_size(), -1);
+	MLV_resize_image_with_proportions(images.shot_enemy, get_shot_size(), -1);
 	MLV_resize_image_with_proportions(images.spaceship, get_spaceship_width(), get_spaceship_height());
-	MLV_resize_image_with_proportions(images.enemy, get_enemy_width(), get_enemy_height());
+	MLV_resize_image_with_proportions(images.enemy, get_enemy_width(), -1);
 	Linked_list stars = linked_list_create();
 	Linked_list events = linked_list_create();
 	Linked_list shots = linked_list_create();
 	Linked_list enemies = linked_list_create();
-	int quit = 0, health = 3, timer=0;
+	int quit = 0, health = 3, timer_shot = 0, timer_enemy = 0;
 
 	MLV_change_frame_rate(120);
 
@@ -47,7 +45,7 @@ int main(int argc, char const *argv[])
 		/* Start frame */
 
 		/* Display of the current frame */
-		display_one_frame(images, spaceship, stars, shots,enemies, health);
+		display_one_frame(images, spaceship, stars, shots, enemies, health);
 
 		/* Get event */
 		event = MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
@@ -75,9 +73,9 @@ int main(int argc, char const *argv[])
 					spaceship_move_down(&spaceship, get_window_height());
 					break;
 				case MLV_KEYBOARD_SPACE :
-					if(timer==30){
-						shots_create_shot(&shots, spaceship, get_spaceship_width());
-						timer=0;	
+					if (timer_shot == 30) {
+						shots_create_shot(&shots, spaceship, get_spaceship_width(), get_spaceship_height(), 0);
+						timer_shot = 0;	
 					}
 					break;	
 				case MLV_KEYBOARD_ESCAPE :
@@ -89,18 +87,29 @@ int main(int argc, char const *argv[])
 			last_event = last_event->prev;
 		}
 
-		/*add a star to the stars list*/
+		/* Create objects */
 		stars_create_star(&stars, get_window_width());
-		enemies_create_enemy(&enemies,get_window_width());
+		if (timer_enemy == 80) {
+			enemies_create_enemy(&enemies, get_window_width());
+			enemies_create_shot(&enemies, &shots);
+			timer_enemy = 0;
+		}
+
+		
 
 		/* Moves of the entities on the board */
 		stars_move_down(&stars, get_window_height());
 		shots_move(&shots, get_window_height());
-		enemies_move_down(&enemies,get_window_height());
+		enemies_move_down(&enemies, get_window_height());
+
+		
 
 		/* End frame */
-		if(timer<30){
-			++timer;
+		if (timer_shot < 30) {
+			++timer_shot;
+		}
+		if (timer_enemy < 80) {
+			++timer_enemy;
 		}
 		MLV_delay_according_to_frame_rate();
 	}

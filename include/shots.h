@@ -5,6 +5,6 @@
 #include "../include/linked_list.h"
 
 void shots_move(Linked_list *shots, int window_height);
-void shots_create_shot(Linked_list *shots, Spaceship spaceship, int spaceship_width);
+void shots_create_shot(Linked_list *shots, Spaceship spaceship, int spaceship_width, int spaceship_height, int direction);
 
 #endif
