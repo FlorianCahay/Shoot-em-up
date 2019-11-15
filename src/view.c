@@ -38,8 +38,8 @@ void display_health_bar(MLV_Image *image, int health) {
 	}
 }
 /* Display all stars. */
-void display_stars(Linked_list linked_list, MLV_Image *image_star) {
-	Element *last = linked_list.last;
+void display_stars(Linked_list stars, MLV_Image *image_star) {
+	Element *last = stars.last;
 	while (last->null == 0){
 		MLV_Image * image_star_copy = MLV_copy_image(image_star);
 		MLV_resize_image(image_star_copy, last->data.star.size, last->data.star.size);
@@ -54,19 +54,29 @@ void display_spaceship(MLV_Image *image_spaceship, Spaceship spaceship) {
 	MLV_draw_image(image_spaceship, spaceship.x, spaceship.y);
 }
 /* Display all shots. */
-void display_shots(MLV_Image *image_shot, Linked_list linked_list) {
-	Element *last = linked_list.last;
+void display_shots(MLV_Image *image_shot, Linked_list shots) {
+	Element *last = shots.last;
 	while (last->null == 0) {
 		MLV_draw_image(image_shot, last->data.shot.x - 15, last->data.shot.y);
 		last = last->prev;
 	}
 }
+
+/* Display all enemies. */
+void display_enemies(MLV_Image *image_enemy, Linked_list enemies) {
+	Element *last = enemies.last;
+	while (last->null == 0) {
+		MLV_draw_image(image_enemy, last->data.spaceship.x, last->data.spaceship.y);
+		last = last->prev;
+	}
+}
 /* Display all items in the window and actualize it. */
-void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, int health) {
+void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, int health) {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
 	display_shots(images.shot_ally, shots);
-	display_spaceship(images.spaceship, spaceship);
+	display_spaceship(images.spaceship,spaceship);
+	display_enemies(images.enemy,enemies);
 	display_fps();
 	display_health_bar(images.heart, health);
 	MLV_actualise_window();

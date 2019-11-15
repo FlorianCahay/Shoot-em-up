@@ -4,12 +4,14 @@
 #include <MLV/MLV_all.h>
 #include "../include/star.h"
 #include "../include/shot.h"
+#include "../include/spaceship.h"
 
 /* Different types. */
 typedef union{
 	MLV_Keyboard_button key;
 	Star star;
 	Shot shot;
+	Spaceship spaceship;
 } Data;
 
 /* Struct of a list element. */

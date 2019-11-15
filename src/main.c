@@ -9,6 +9,7 @@
 #include "../include/events.h"
 #include "../include/shot.h"
 #include "../include/shots.h"
+#include "../include/enemies.h"
 
 #define BILLION 1E9
 
@@ -30,9 +31,11 @@ int main(int argc, char const *argv[])
 	MLV_resize_image(images.heart, 30, 30);
 	MLV_resize_image_with_proportions(images.shot_ally, get_shot_size(), -1);
 	MLV_resize_image_with_proportions(images.spaceship, get_spaceship_width(), get_spaceship_height());
+	MLV_resize_image_with_proportions(images.enemy, get_enemy_width(), get_enemy_height());
 	Linked_list stars = linked_list_create();
 	Linked_list events = linked_list_create();
 	Linked_list shots = linked_list_create();
+	Linked_list enemies = linked_list_create();
 	int quit = 0, health = 3, timer=0;
 
 	MLV_change_frame_rate(120);
@@ -44,7 +47,7 @@ int main(int argc, char const *argv[])
 		/* Start frame */
 
 		/* Display of the current frame */
-		display_one_frame(images, spaceship, stars, shots, health);
+		display_one_frame(images, spaceship, stars, shots,enemies, health);
 
 		/* Get event */
 		event = MLV_get_event(&symbol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &state);
@@ -88,10 +91,12 @@ int main(int argc, char const *argv[])
 
 		/*add a star to the stars list*/
 		stars_create_star(&stars, get_window_width());
+		enemies_create_enemy(&enemies,get_window_width());
 
 		/* Moves of the entities on the board */
 		stars_move_down(&stars, get_window_height());
 		shots_move(&shots, get_window_height());
+		enemies_move_down(&enemies,get_window_height());
 
 		/* End frame */
 		if(timer<30){
@@ -103,6 +108,7 @@ int main(int argc, char const *argv[])
 	linked_list_free(&stars);
 	linked_list_free(&events);
 	linked_list_free(&shots);
+	linked_list_free(&enemies);
 	close_image(images.star);
 	close_image(images.spaceship);
 	close_image(images.heart);
