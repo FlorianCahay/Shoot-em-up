@@ -17,8 +17,8 @@ int main(int argc, char const *argv[])
 	MLV_Button_state state;
 	MLV_Event event;
 
-	Rectangle * rectangles=get_hitbox("src/hitbox/spaceship_hitbox.txt");
-	printf("%f %f %f %f",rectangles[0].x,rectangles[0].y,rectangles[0].x2,rectangles[0].y2);
+	Hitbox hitbox = get_hitbox("src/hitbox/spaceship_hitbox.txt");
+	printf("%f %f %f %f \n", hitbox.rectangle[0].x, hitbox.rectangle[0].y, hitbox.rectangle[0].x2, hitbox.rectangle[0].y2);
 
 	open_new_window();
 	Images images = { 	MLV_load_image("src/media/star.png"),
@@ -105,6 +105,9 @@ int main(int argc, char const *argv[])
 		stars_move_down(&stars, get_window_height());
 		shots_move(&shots, get_window_height());
 		enemies_move_down(&enemies, get_window_height());
+
+		/* Test hitbox */
+		/*verify_hitbox_shots(&shots, &hitbox);*/
 
 		
 
