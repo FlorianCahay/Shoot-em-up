@@ -57,9 +57,9 @@ void display_spaceship(MLV_Image *image_spaceship, Spaceship spaceship) {
 void display_shots(MLV_Image *image_shot_ally, MLV_Image *image_shot_enemy, Linked_list shots) {
 	Element *last = shots.last;
 	while (last->null == 0) {
-		if (last->data.shot.direction == 0) {
+		if (last->data.shot.type == ALLY) {
 			MLV_draw_image(image_shot_ally, last->data.shot.x - 15, last->data.shot.y);	
-		} else if (last->data.shot.direction == 1) {
+		} else if (last->data.shot.type == ENEMY) {
 			MLV_draw_image(image_shot_enemy, last->data.shot.x - 15, last->data.shot.y);	
 		}
 		last = last->prev;

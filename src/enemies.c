@@ -25,10 +25,10 @@ void enemies_move_down(Linked_list *enemies, int window_height) {
 	}
 }
 /* Enemy shot. */
-void enemies_create_shot(Linked_list *enemies, Linked_list *shots) {
+void enemies_create_shot(Linked_list *enemies, Linked_list *shots,int window_height) {
 	Element *last = enemies->last;
 	while (last->null == 0) {
-		shots_create_shot(shots, last->data.spaceship, get_enemy_width(), get_enemy_height(), 1);	
+		shots_create_shot(shots, last->data.spaceship, get_enemy_width(), get_enemy_height(),window_height,1);	
 		last = last->prev;
 	}
 }

@@ -17,9 +17,11 @@ int main(int argc, char const *argv[])
 	MLV_Button_state state;
 	MLV_Event event;
 
-	Hitbox hitbox = get_hitbox("src/hitbox/spaceship_hitbox.txt");
-	printf("%f %f %f %f \n", hitbox.rectangle[0].x, hitbox.rectangle[0].y, hitbox.rectangle[0].x2, hitbox.rectangle[0].y2);
-
+	Hitbox hitbox_spaceship = get_hitbox("src/hitbox/spaceship_hitbox.txt",get_spaceship_width(),get_spaceship_height());
+	Hitbox hitbox_shot_ally = get_hitbox("src/hitbox/shot_ally_hitbox.txt",get_shot_size(),get_shot_size());
+	Hitbox hitbox_shot_enemy = get_hitbox("src/hitbox/shot_enemy_hitbox.txt",get_shot_size(),get_shot_size());
+	Hitbox hitbox_enemy =get_hitbox("src/hitbox/enemy_hitbox.txt",get_enemy_width(),get_enemy_height());
+	
 	open_new_window();
 	Images images = { 	MLV_load_image("src/media/star.png"),
 						MLV_load_image("src/media/spaceship.png"),
@@ -78,7 +80,7 @@ int main(int argc, char const *argv[])
 					break;
 				case MLV_KEYBOARD_SPACE :
 					if (timer_shot == 30) {
-						shots_create_shot(&shots, spaceship, get_spaceship_width(), get_spaceship_height(), 0);
+						shots_create_shot(&shots, spaceship, get_spaceship_width(), get_spaceship_height(),get_window_height(), 0);
 						timer_shot = 0;	
 					}
 					break;	
@@ -95,7 +97,7 @@ int main(int argc, char const *argv[])
 		stars_create_star(&stars, get_window_width());
 		if (timer_enemy == 80) {
 			enemies_create_enemy(&enemies, get_window_width());
-			enemies_create_shot(&enemies, &shots);
+			enemies_create_shot(&enemies, &shots,get_window_height());
 			timer_enemy = 0;
 		}
 
@@ -103,11 +105,11 @@ int main(int argc, char const *argv[])
 
 		/* Moves of the entities on the board */
 		stars_move_down(&stars, get_window_height());
-		shots_move(&shots, get_window_height());
+		shots_move(&shots,get_window_width(), get_window_height());
 		enemies_move_down(&enemies, get_window_height());
 
 		/* Test hitbox */
-		/*verify_hitbox_shots(&shots, &hitbox);*/
+		shot_hit_enemy(hitbox_enemy,hitbox_shot_ally,&enemies,&shots);
 
 		
 
