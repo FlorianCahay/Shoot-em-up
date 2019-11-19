@@ -9,12 +9,16 @@
 #include "../include/shot.h"
 #include "../include/shots.h"
 #include "../include/enemies.h"
+#include "../include/hitbox.h"
 
 int main(int argc, char const *argv[])
 {
 	MLV_Keyboard_button symbol = MLV_KEYBOARD_NONE;
 	MLV_Button_state state;
 	MLV_Event event;
+
+	Rectangle * rectangles=get_hitbox("src/hitbox/spaceship_hitbox.txt");
+	printf("%f %f %f %f",rectangles[0].x,rectangles[0].y,rectangles[0].x2,rectangles[0].y2);
 
 	open_new_window();
 	Images images = { 	MLV_load_image("src/media/star.png"),
