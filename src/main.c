@@ -110,8 +110,8 @@ int main(int argc, char const *argv[])
 
 		/* Test hitbox */
 		shot_hit_enemy(hitbox_enemy,hitbox_shot_ally,&enemies,&shots);
-
-		
+		spaceship_hit_enemy(hitbox_spaceship,hitbox_enemy,spaceship,&enemies,&health);
+		spaceship_hit_shot(hitbox_spaceship,hitbox_shot_enemy,spaceship,&shots,&health);
 
 		/* End frame */
 		if (timer_shot < 30) {
