@@ -80,7 +80,7 @@ int main(int argc, char const *argv[])
 					break;
 				case MLV_KEYBOARD_SPACE :
 					if (timer_shot == 30) {
-						shots_create_shot(&shots, spaceship, get_spaceship_width(), get_spaceship_height(),get_window_height(), 0);
+						shots_create_shot(&shots, spaceship, get_spaceship_width(), get_spaceship_height(),spaceship,get_window_height(), 0);
 						timer_shot = 0;	
 					}
 					break;	
@@ -97,7 +97,7 @@ int main(int argc, char const *argv[])
 		stars_create_star(&stars, get_window_width());
 		if (timer_enemy == 80) {
 			enemies_create_enemy(&enemies, get_window_width());
-			enemies_create_shot(&enemies, &shots,get_window_height());
+			enemies_create_shot(&enemies, &shots,spaceship,get_window_height());
 			timer_enemy = 0;
 		}
 
