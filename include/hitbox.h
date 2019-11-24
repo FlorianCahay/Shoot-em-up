@@ -23,4 +23,6 @@ void spaceship_hit_enemy(Hitbox hitbox_spaceship,Hitbox hitbox_enemy,Spaceship s
 
 void spaceship_hit_shot(Hitbox hitbox_spaceship,Hitbox hitbox_shot_enemy,Spaceship spaceship,Linked_list * shots,int * health);
 
+void hitbox_free(Rectangle * rectangle);
+
 #endif

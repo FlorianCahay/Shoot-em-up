@@ -58,9 +58,13 @@ void display_shots(MLV_Image *image_shot_ally, MLV_Image *image_shot_enemy, Link
 	Element *last = shots.last;
 	while (last->null == 0) {
 		if (last->data.shot.type == ALLY) {
-			MLV_draw_image(image_shot_ally, last->data.shot.x - 15, last->data.shot.y);	
+			MLV_draw_image(image_shot_ally, last->data.shot.x, last->data.shot.y);	
 		} else if (last->data.shot.type == ENEMY) {
-			MLV_draw_image(image_shot_enemy, last->data.shot.x - 15, last->data.shot.y);	
+			MLV_Image * image_shot_copy = MLV_copy_image(image_shot_enemy);
+			MLV_rotate_image(image_shot_copy,last->data.shot.rotation+90);
+			MLV_draw_image(image_shot_copy, last->data.shot.x, last->data.shot.y);
+			MLV_free_image(image_shot_copy);
+			image_shot_copy=NULL;
 		}
 		last = last->prev;
 	}

@@ -78,7 +78,7 @@ void shot_hit_enemy(Hitbox hitbox_enemy,Hitbox hitbox_shot_ally,Linked_list * en
                 for (j= 0; j < hitbox_shot_ally.size; ++j)
                 {
                     /*+15 ?*/
-                    if(rectangle_in_rectangle(hitbox_enemy.rectangle[i],last_enemy->data.spaceship.x+15,last_enemy->data.spaceship.y,hitbox_shot_ally.rectangle[j],last_shot->data.shot.x,last_shot->data.shot.y)){
+                    if(rectangle_in_rectangle(hitbox_enemy.rectangle[i],last_enemy->data.spaceship.x,last_enemy->data.spaceship.y,hitbox_shot_ally.rectangle[j],last_shot->data.shot.x,last_shot->data.shot.y)){
                         linked_list_remove(last_shot);
                         linked_list_remove(last_enemy);
                     }
@@ -133,4 +133,9 @@ void spaceship_hit_shot(Hitbox hitbox_spaceship,Hitbox hitbox_shot_enemy,Spacesh
             }
         last_shot=last_shot->prev;
     }
+}
+
+void hitbox_free(Rectangle * rectangle){
+    free(rectangle);
+    rectangle=NULL;
 }

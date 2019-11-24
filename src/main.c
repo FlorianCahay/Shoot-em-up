@@ -127,6 +127,10 @@ int main(int argc, char const *argv[])
 	linked_list_free(&events);
 	linked_list_free(&shots);
 	linked_list_free(&enemies);
+	hitbox_free(hitbox_spaceship.rectangle);
+	hitbox_free(hitbox_shot_enemy.rectangle);
+	hitbox_free(hitbox_shot_ally.rectangle);
+	hitbox_free(hitbox_enemy.rectangle);
 	close_image(images.star);
 	close_image(images.spaceship);
 	close_image(images.heart);
