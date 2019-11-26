@@ -7,9 +7,7 @@
 
 /* Create a spaceship with x and y coordinates. */
 Spaceship spaceship_create(int x, int y){
-	Spaceship spaceship = {};
-	spaceship.x = x;
-	spaceship.y = y;
+	Spaceship spaceship = {x, y};
 	return spaceship; 
 }
 

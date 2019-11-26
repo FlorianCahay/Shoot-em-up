@@ -3,7 +3,7 @@
 
 #include "../include/spaceship.h"
 
-typedef enum {ALLY,ENEMY} Type;
+typedef enum {ALLY, ENEMY} Type;
 
 typedef struct {
 	double x;
@@ -14,8 +14,8 @@ typedef struct {
 	Type type;
 }Shot;
 
-Shot shot_create(int x, int y, double x_move, double y_move, int speed,Type type);
-int shot_move(Shot * shot,int width,int height);
+Shot shot_create(int x, int y, double x_move, double y_move, int speed, Type type);
+int shot_move(Shot *shot, int width, int height);
 int get_shot_size();
 
 #endif
