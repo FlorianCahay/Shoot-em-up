@@ -14,12 +14,13 @@ void enemies_create_enemy(Linked_list *enemies, int window_width){
 	}
 }
 /* Move down all enemies. */
-void enemies_move_down(Linked_list *enemies, int window_height) {
+void enemies_move_down(Linked_list *enemies, int window_height,int * health) {
 	Element *last = enemies->last;
 	while (last->null == 0) {
 		spaceship_move(&last->data.spaceship.y, +1, ENEMY_SPEED);
 		if(last->data.spaceship.y > window_height){
 			linked_list_remove(last);
+			*health=*health-1;
 		}
 		last = last->prev;
 	}

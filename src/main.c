@@ -1,4 +1,4 @@
-#include <stdio.h>
+	#include <stdio.h>
 #include <stdlib.h>
 #include <MLV/MLV_all.h>
 #include "../include/view.h"
@@ -138,7 +138,7 @@ int main(int argc, char const *argv[])
 		/* Moves of the entities on the board */
 		stars_move_down(&stars, get_window_height());
 		shots_move(&shots, get_window_width(), get_window_height());
-		enemies_move_down(&enemies, get_window_height());
+		enemies_move_down(&enemies, get_window_height(),&health);
 
 		/* Test hitbox */
 		shot_hit_enemy(hitbox_enemy, hitbox_shot_ally,&enemies,&shots);
