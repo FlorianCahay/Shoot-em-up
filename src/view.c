@@ -1,5 +1,8 @@
-
 #include "../include/view.h"
+
+#define BLOC_WIDTH get_window_width()/10
+#define BLOC_HEIGHT get_window_height()/10
+
 
 /* Return window height. */
 int get_window_height() {
@@ -88,4 +91,41 @@ void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Li
 	display_fps();
 	display_health_bar(images.heart, health);
 	MLV_actualise_window();
+}
+/* Display menu */
+void display_menu(MLV_Font* font_title, MLV_Font* font_choice, Linked_list stars, Images images) {
+	MLV_clear_window(MLV_COLOR_BLACK);
+	display_stars(stars, images.star);
+
+	int text_title_width = 0, text_title_height = 0, text_choice_width = 0, text_choice_height = 0;
+	MLV_get_size_of_text_with_font("Shoot'em up", &text_title_width, &text_title_height, font_title);
+	MLV_get_size_of_text_with_font("P - Play", &text_choice_width, &text_choice_height, font_choice);
+	
+	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_title_width/2), (BLOC_HEIGHT*3)-(text_title_height/2), "Shoot'em up", font_title, MLV_COLOR_RED);
+	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_choice_width/2), (BLOC_HEIGHT*5)-(text_choice_height/2), "P - Play", font_choice, MLV_COLOR_RED);
+	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_choice_width/2), (BLOC_HEIGHT*6)-(text_choice_height/2), "H - Help", font_choice, MLV_COLOR_RED);
+	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_choice_width/2), (BLOC_HEIGHT*7)-(text_choice_height/2), "Q - Quit", font_choice, MLV_COLOR_RED);
+	MLV_actualise_window();
+}
+void display_help(MLV_Font* font_title, MLV_Font* font_text) {
+	MLV_clear_window(MLV_COLOR_BLACK);
+	char msg[] = "Utilisez les flèches pour vous déplacer\nAppuyez sur espace pour tirer\nAppuyer sur Q pour quitter";
+
+	int text_title_width = 0, text_title_height = 0, text_text_width = 0, text_text_height = 0;
+	MLV_get_size_of_text_with_font("HELP", &text_title_width, &text_title_height, font_title);
+	MLV_get_size_of_text_with_font(msg, &text_text_width, &text_text_height, font_text);
+
+	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_title_width/2), (BLOC_HEIGHT*2)-(text_title_height/2), "HELP", font_title, MLV_COLOR_RED);
+	MLV_draw_adapted_text_box_with_font(BLOC_WIDTH-(BLOC_WIDTH/2), BLOC_HEIGHT*4, msg, font_text, 20, MLV_COLOR_BLACK, MLV_COLOR_RED, MLV_COLOR_BLACK, MLV_TEXT_CENTER);
+	display_menu_bar(font_text);
+	MLV_actualise_window();
+}
+
+void display_menu_bar(MLV_Font* font_text) {
+	int text_text_width = 0, text_text_height = 0;
+	MLV_get_size_of_text_with_font("X - XXXX", &text_text_width, &text_text_height, font_text);
+
+	MLV_draw_text_with_font((BLOC_WIDTH*2)-(text_text_width/2), BLOC_HEIGHT*9, "P - PLAY", font_text, MLV_COLOR_RED);
+	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_text_width/2), BLOC_HEIGHT*9, "H - HELP", font_text, MLV_COLOR_RED);
+	MLV_draw_text_with_font((BLOC_WIDTH*8)-(text_text_width/2), BLOC_HEIGHT*9, "M - MENU", font_text, MLV_COLOR_RED);
 }

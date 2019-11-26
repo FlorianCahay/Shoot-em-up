@@ -27,7 +27,7 @@ Shot shot_create(int x, int y, double x_move, double y_move,int speed,Type type)
 int shot_move(Shot * shot,int width,int height){
 	shot->x+=shot->x_move;
 	shot->y+=shot->y_move;
-	if(shot->x<=0 || shot->x>=width || shot->y<=0 || shot->y>=height){
+	if(shot->x <= -15 || shot->x >= width || shot->y <= 0 || shot->y >= height){
 		return 1;
 	}
 	return 0;

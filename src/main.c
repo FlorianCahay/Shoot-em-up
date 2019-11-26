@@ -11,36 +11,76 @@
 #include "../include/enemies.h"
 #include "../include/hitbox.h"
 
+void free_images(Images images);
+
 int main(int argc, char const *argv[])
 {
+	open_new_window();
 	MLV_Keyboard_button symbol = MLV_KEYBOARD_NONE;
 	MLV_Button_state state;
 	MLV_Event event;
-
-	Hitbox hitbox_spaceship = get_hitbox("src/hitbox/spaceship_hitbox.txt",get_spaceship_width(),get_spaceship_height());
-	Hitbox hitbox_shot_ally = get_hitbox("src/hitbox/shot_ally_hitbox.txt",get_shot_size(),get_shot_size());
-	Hitbox hitbox_shot_enemy = get_hitbox("src/hitbox/shot_enemy_hitbox.txt",get_shot_size(),get_shot_size());
-	Hitbox hitbox_enemy =get_hitbox("src/hitbox/enemy_hitbox.txt",get_enemy_width(),get_enemy_height());
-	
-	open_new_window();
 	Images images = { 	MLV_load_image("src/media/star.png"),
 						MLV_load_image("src/media/spaceship.png"),
 						MLV_load_image("src/media/heart.png"),
 						MLV_load_image("src/media/shot_ally.png"),
 						MLV_load_image("src/media/shot_enemy.png"),
 						MLV_load_image("src/media/enemy.png") };
-
 	MLV_resize_image(images.star, 30, 30);
+	Linked_list stars = linked_list_create();
+	int play = 0;
+
+	MLV_Font* font_title = MLV_load_font("src/fonts/Orbitron-Bold.ttf", 50);
+	MLV_Font* font_choice = MLV_load_font("src/fonts/Orbitron-Regular.ttf", 25);
+
+	display_menu(font_title, font_choice, stars, images);
+
+	/* Display menu */
+	while (!play) {
+		display_menu(font_title, font_choice, stars, images);
+
+		switch (symbol) {
+			case MLV_KEYBOARD_p :
+				/* PLAY */
+				play = 1;
+				break;
+			case MLV_KEYBOARD_h :
+				/* HELP */
+				display_help(font_title, font_choice);
+				break;
+			case MLV_KEYBOARD_m :
+				/*	QUIT */
+				display_menu(font_title, font_choice, stars, images);
+				break;
+			case MLV_KEYBOARD_q:
+				break;
+			default :
+				break;
+		}
+
+		stars_create_star(&stars, get_window_width());
+		stars_move_down(&stars, get_window_height());
+	}
+	
+
+	Hitbox hitbox_spaceship = get_hitbox("src/hitbox/spaceship_hitbox.txt",get_spaceship_width(),get_spaceship_height());
+	Hitbox hitbox_shot_ally = get_hitbox("src/hitbox/shot_ally_hitbox.txt",get_shot_size(),get_shot_size());
+	Hitbox hitbox_shot_enemy = get_hitbox("src/hitbox/shot_enemy_hitbox.txt",get_shot_size(),get_shot_size());
+	Hitbox hitbox_enemy =get_hitbox("src/hitbox/enemy_hitbox.txt",get_enemy_width(),get_enemy_height());
+	
+	
+	
+
+	
 	MLV_resize_image(images.heart, 30, 30);
 	MLV_resize_image_with_proportions(images.shot_ally, get_shot_size(), -1);
 	MLV_resize_image_with_proportions(images.shot_enemy, get_shot_size(), -1);
 	MLV_resize_image_with_proportions(images.spaceship, get_spaceship_width(), get_spaceship_height());
 	MLV_resize_image_with_proportions(images.enemy, get_enemy_width(), -1);
-	Linked_list stars = linked_list_create();
+	
 	Linked_list events = linked_list_create();
 	Linked_list shots = linked_list_create();
 	Linked_list enemies = linked_list_create();
-	int quit = 0, health = 3, timer_shot = 0, timer_enemy = 0;
+	int quit = 0, health = 3, timer_shot = 0, timer_enemy = 0, timer_shot_enemy = 0;
 
 	MLV_change_frame_rate(120);
 
@@ -97,7 +137,10 @@ int main(int argc, char const *argv[])
 		stars_create_star(&stars, get_window_width());
 		if (timer_enemy == 80) {
 			enemies_create_enemy(&enemies, get_window_width());
-			enemies_create_shot(&enemies, &shots,spaceship,get_window_height());
+			if (timer_shot_enemy == 200) {
+				enemies_create_shot(&enemies, &shots,spaceship,get_window_height());
+				timer_shot_enemy = 0;
+			}
 			timer_enemy = 0;
 		}
 
@@ -120,6 +163,9 @@ int main(int argc, char const *argv[])
 		if (timer_enemy < 80) {
 			++timer_enemy;
 		}
+		if (timer_shot_enemy < 200) {
+			++timer_shot_enemy;
+		}
 		MLV_delay_according_to_frame_rate();
 	}
 
@@ -131,13 +177,19 @@ int main(int argc, char const *argv[])
 	hitbox_free(hitbox_shot_enemy.rectangle);
 	hitbox_free(hitbox_shot_ally.rectangle);
 	hitbox_free(hitbox_enemy.rectangle);
+	free_images(images);
+	MLV_free_font(font_title);
+	MLV_free_font(font_choice);
+	close_window();
+
+	return 0;
+}
+
+void free_images(Images images) {
 	close_image(images.star);
 	close_image(images.spaceship);
 	close_image(images.heart);
 	close_image(images.shot_ally);
 	close_image(images.shot_enemy);
 	close_image(images.enemy);
-	close_window();
-
-	return 0;
 }
