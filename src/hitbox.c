@@ -63,26 +63,26 @@ int rectangle_in_rectangle(Rectangle rectangle1,int x1,int y1,Rectangle rectangl
     return 0;
 }
 
-void shot_hit_enemy(Hitbox hitbox_enemy,Hitbox hitbox_shot_ally,Linked_list * enemies,Linked_list * shots){
-    Element * last_shot = shots->last;
-    while(last_shot->null==0){
-        if(last_shot->data.shot.type==ENEMY){
-            last_shot=last_shot->prev;
+void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *enemies, Linked_list *shots, int *score){
+    Element *last_shot = shots->last;
+    while (last_shot->null == 0){
+        if (last_shot->data.shot.type == ENEMY) {
+            last_shot = last_shot->prev;
             continue;
         }
-        Element * last_enemy = enemies->last;
-        while(last_enemy->null==0){
+        Element *last_enemy = enemies->last;
+        while (last_enemy->null == 0) {
             int i,j;
-            for ( i = 0; i < hitbox_enemy.size; ++i)
+            for (i = 0; i < hitbox_enemy.size; ++i)
             {
                 for (j= 0; j < hitbox_shot_ally.size; ++j)
                 {
                     /*+15 ?*/
-                    if(rectangle_in_rectangle(hitbox_enemy.rectangle[i],last_enemy->data.spaceship.x,last_enemy->data.spaceship.y,hitbox_shot_ally.rectangle[j],last_shot->data.shot.x,last_shot->data.shot.y)){
+                    if (rectangle_in_rectangle(hitbox_enemy.rectangle[i], last_enemy->data.spaceship.x, last_enemy->data.spaceship.y, hitbox_shot_ally.rectangle[j], last_shot->data.shot.x, last_shot->data.shot.y)) {
                         linked_list_remove(last_shot);
                         linked_list_remove(last_enemy);
+                        *score = *score + 25;
                     }
-                    
                 }
             }
             last_enemy=last_enemy->prev;

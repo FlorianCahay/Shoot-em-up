@@ -2,16 +2,24 @@
 
 #define BLOC_WIDTH get_window_width()/10
 #define BLOC_HEIGHT get_window_height()/10
-#define WINDOW_WIDTH (MLV_get_desktop_height()/10)*8
-#define WINDOW_HEIGHT MLV_get_desktop_width()/3
+#define WINDOW_HEIGHT (MLV_get_desktop_height()/10)*9
+#define WINDOW_WIDTH (MLV_get_desktop_width()/3)
 
 /* Return window height. */
 int get_window_height() {
-	return WINDOW_WIDTH;
+	return WINDOW_HEIGHT;
 }
 /* Return window width. */
 int get_window_width() {
-	return WINDOW_HEIGHT;
+	return WINDOW_WIDTH;
+}
+/* Return window game height. */
+int get_window_game_height() {
+	return WINDOW_HEIGHT-BLOC_HEIGHT;
+}
+/* Return window game width. */
+int get_window_game_width() {
+	return WINDOW_WIDTH;
 }
 /* Open window. */
 void open_new_window() {
@@ -38,17 +46,26 @@ void close_all_images(Images images) {
 	close_image(images.shot_enemy);
 	close_image(images.enemy);
 }
-/* Display number of FPS on the top corner left. */
-void display_fps() {
-	int fps = MLV_get_frame_rate();
-	MLV_draw_text(10, 10, "FPS: %d", MLV_COLOR_RED, fps);
+/* Display a defeat message. */
+void display_defeat(MLV_Font* font) {
+	int text_width = 0, text_height = 0;
+	MLV_get_size_of_text_with_font("DEFEAT", &text_width, &text_height, font);
+	MLV_draw_text_with_font((get_window_game_width()/2)-(text_width/2), (get_window_game_height()/2)-(text_height/2), "DEFEAT", font, MLV_COLOR_RED);
+	MLV_actualise_window();
 }
-/* Display the health bar at the bottom left. */
-void display_health_bar(MLV_Image *image, const int health) {
+/* Display number of FPS on the top corner left, health bar at the bottom left and score. */
+void display_stats(MLV_Image *image, const int score, const int health, const int time) {
+	MLV_draw_filled_rectangle(0, get_window_game_height(), get_window_game_width(), get_window_height(), MLV_COLOR_WHITE);
+	int fps = MLV_get_frame_rate();
 	int i;
-	for (i = 0; i < health; i++) {
-		MLV_draw_image(image, 30*i, get_window_height()-30);
+	for (i = 1; i < health+1; i++) {
+		MLV_draw_image(image, get_window_game_width()-(i*50), get_window_game_height()+(BLOC_HEIGHT/3));
 	}
+	MLV_draw_text(10, 10, "FPS: %d", MLV_COLOR_RED, fps);
+	MLV_draw_text(BLOC_WIDTH/2, get_window_game_height()+(BLOC_HEIGHT/3)/2, "Score: %d", MLV_COLOR_RED, score);
+	MLV_draw_text(BLOC_WIDTH/2, get_window_game_height()+((BLOC_HEIGHT/3)*2)/2, "Kills: %d", MLV_COLOR_RED, score/25);
+	MLV_draw_text(BLOC_WIDTH/2, get_window_game_height()+(BLOC_HEIGHT)/2, "Time: %d", MLV_COLOR_RED, time/1000);
+
 }
 /* Display all stars. */
 void display_stars(Linked_list stars, MLV_Image *image_star) {
@@ -62,7 +79,7 @@ void display_stars(Linked_list stars, MLV_Image *image_star) {
 		last = last->prev;
 	}
 }
-/* Display spaceship in the center. */
+/* Display spaceship. */
 void display_spaceship(MLV_Image *image_spaceship, Spaceship spaceship) {
 	MLV_draw_image(image_spaceship, spaceship.x, spaceship.y);
 }
@@ -73,16 +90,15 @@ void display_shots(MLV_Image *image_shot_ally, MLV_Image *image_shot_enemy, Link
 		if (last->data.shot.type == ALLY) {
 			MLV_draw_image(image_shot_ally, last->data.shot.x, last->data.shot.y);	
 		} else if (last->data.shot.type == ENEMY) {
-			MLV_Image * image_shot_copy = MLV_copy_image(image_shot_enemy);
-			MLV_rotate_image(image_shot_copy,last->data.shot.rotation+90);
+			MLV_Image *image_shot_copy = MLV_copy_image(image_shot_enemy);
+			MLV_rotate_image(image_shot_copy, last->data.shot.rotation+90);
 			MLV_draw_image(image_shot_copy, last->data.shot.x, last->data.shot.y);
 			MLV_free_image(image_shot_copy);
-			image_shot_copy=NULL;
+			image_shot_copy = NULL;
 		}
 		last = last->prev;
 	}
 }
-
 /* Display all enemies. */
 void display_enemies(MLV_Image *image_enemy, Linked_list enemies) {
 	Element *last = enemies.last;
@@ -92,16 +108,18 @@ void display_enemies(MLV_Image *image_enemy, Linked_list enemies) {
 	}
 }
 /* Display all items in the window and actualize it. */
-void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, const int health) {
+void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, const int health, const int score, const int time) {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
 	display_shots(images.shot_ally, images.shot_enemy, shots);
 	display_spaceship(images.spaceship,spaceship);
 	display_enemies(images.enemy,enemies);
-	display_fps();
-	display_health_bar(images.heart, health);
+	display_stats(images.heart, score, health, time);
 	MLV_actualise_window();
 }
+
+/*** MENU ***/
+
 /* Display menu */
 void display_menu(MLV_Font* font_title, MLV_Font* font_choice, Linked_list stars, Images images, const int screen) {
 	MLV_clear_window(MLV_COLOR_BLACK);
@@ -117,7 +135,6 @@ void display_menu(MLV_Font* font_title, MLV_Font* font_choice, Linked_list stars
 		default:
 			break;
 	}
-	
 	MLV_actualise_window();
 }
 void display_home(MLV_Font* font_title, MLV_Font* font_choice) {
@@ -148,11 +165,4 @@ void display_menu_bar(MLV_Font* font_text) {
 	MLV_draw_text_with_font((BLOC_WIDTH*2)-(text_width/2), BLOC_HEIGHT*9, "P - PLAY", font_text, MLV_COLOR_RED);
 	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_width/2), BLOC_HEIGHT*9, "H - HELP", font_text, MLV_COLOR_RED);
 	MLV_draw_text_with_font((BLOC_WIDTH*8)-(text_width/2), BLOC_HEIGHT*9, "M - MENU", font_text, MLV_COLOR_RED);
-}
-/* Display a defeat message. */
-void display_defeat(MLV_Font* font) {
-	int text_width = 0, text_height = 0;
-	MLV_get_size_of_text_with_font("DEFEAT", &text_width, &text_height, font);
-	MLV_draw_text_with_font((BLOC_WIDTH*5)-(text_width/2), (BLOC_HEIGHT*5)-(text_height/2), "DEFEAT", font, MLV_COLOR_RED);
-	MLV_actualise_window();
 }
