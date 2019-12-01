@@ -1,3 +1,4 @@
+/* Manage enemies list and enemies values */
 #include "../include/enemies.h"
 #include "../include/shots.h"
 
@@ -5,30 +6,30 @@
 #define ENEMY_HEIGHT 80
 #define ENEMY_SPEED 1
 
-/* Return a enemy with all his properties set. */
+/* Add an enemy in the enemies list if rand() give an even number */
 void enemies_create_enemy(Linked_list *enemies, int window_width){
 	if (rand()%2 == 0) {
 		Data data;
-		data.spaceship = spaceship_create(MLV_get_random_integer(0, window_width-ENEMY_WIDTH), 0-ENEMY_HEIGHT);
+		data.spaceship = spaceship_create(MLV_get_random_integer(0, window_width-ENEMY_WIDTH), 0-ENEMY_HEIGHT); /*initialize union*/
 		linked_list_append(enemies, data);
 	}
 }
-/* Move down all enemies. */
+/* Move all enemies down */
 void enemies_move_down(Linked_list *enemies, int window_height,int * health) {
 	Element *last = enemies->last;
-	while (last->null == 0) {
+	while (last->null == 0) { /* Loop over enemies */
 		spaceship_move(&last->data.spaceship.y, +1, ENEMY_SPEED);
-		if(last->data.spaceship.y > window_height){
+		if(last->data.spaceship.y > window_height){ /* If enemy out of screen */
 			linked_list_remove(last);
 			*health=*health-1;
 		}
 		last = last->prev;
 	}
 }
-/* Enemy shot. */
+/* Create a shot on spawning from each enemy */
 void enemies_create_shot(Linked_list *enemies, Linked_list *shots,Spaceship spaceship,int window_height) {
 	Element *last = enemies->last;
-	while (last->null == 0) {
+	while (last->null == 0) { /* Loop over enemies */
 		shots_create_shot(shots, last->data.spaceship, get_enemy_width(), get_enemy_height(),spaceship,window_height,ENEMY);	
 		last = last->prev;
 	}

@@ -1,3 +1,4 @@
+/* Draw elements */
 #include "../include/view.h"
 
 #define BLOC_WIDTH get_window_width()/10
@@ -137,6 +138,7 @@ void display_menu(MLV_Font* font_title, MLV_Font* font_choice, Linked_list stars
 	}
 	MLV_actualise_window();
 }
+
 void display_home(MLV_Font* font_title, MLV_Font* font_choice) {
 	int text_title_width = 0, text_title_height = 0, text_choice_width = 0, text_choice_height = 0;
 	MLV_get_size_of_text_with_font("Shoot'em up", &text_title_width, &text_title_height, font_title);

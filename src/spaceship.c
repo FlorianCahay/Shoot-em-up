@@ -1,3 +1,4 @@
+/* Manage spaceship structure */
 #include <stdio.h>
 #include "../include/spaceship.h"
 

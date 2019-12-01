@@ -6,7 +6,7 @@
 #include "../include/shot.h"
 #include "../include/spaceship.h"
 
-/* Different types. */
+/* Different types */
 typedef union{
 	MLV_Keyboard_button key;
 	Star star;
@@ -14,11 +14,11 @@ typedef union{
 	Spaceship spaceship;
 } Data;
 
-/* Struct of a list element. */
+/* Struct of a list element  */
 typedef struct ElementL{
 	struct ElementL *prev;
 	Data data;
-	int null; /* null : 1, notnull :0 */
+	int null; /* null : 1, not null : 0 */
 } Element;
 
 /* List struct with the top element. */

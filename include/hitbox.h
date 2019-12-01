@@ -3,6 +3,7 @@
 
 #include "../include/linked_list.h"
 
+/* Top left coordinates and bottom right coordinates */
 typedef struct {
 	float x;
 	float y;
@@ -10,6 +11,7 @@ typedef struct {
 	float y2;
 } Rectangle;
 
+/* Each rectangle of a hitbox with size as the number of rectangles */
 typedef struct {
 	int size;
 	Rectangle *rectangle;

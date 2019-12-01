@@ -1,13 +1,11 @@
-
-/*Linked list for shots, stars and spaceships*/
-
+/*Linked list for keyboard events,shots, stars and spaceships*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <MLV/MLV_all.h>
 #include "../include/star.h"
 #include "../include/linked_list.h"
 
-/* Initialize a Linked_List. */
+/* Initialize a Linked_List */
 Linked_list linked_list_create(){
 	Element *last = NULL;
 	last = malloc(sizeof(Element));
@@ -20,7 +18,7 @@ Linked_list linked_list_create(){
 	return linked_list;
 }
 
-/* Append an element on the top of the list. */
+/* Append an element on the top of the list */
 void linked_list_append(Linked_list *linked_list,Data data){
 	Element *new_element = NULL;
 	new_element = malloc(sizeof(Element));
@@ -34,7 +32,7 @@ void linked_list_append(Linked_list *linked_list,Data data){
 	linked_list->last = new_element;
 }
 
-/* Remove the element on the top of the list. */
+/* Remove the element on the top of the list */
 void linked_list_pop(Linked_list *linked_list){
 	if (linked_list->last->null == 1) {
 		return;
@@ -45,7 +43,7 @@ void linked_list_pop(Linked_list *linked_list){
 	last = NULL;
 }
 
-/* Remove the element in parameter in the list. */
+/* Remove the element in parameter in the list */
 void linked_list_remove(Element *elem){
 	Element *elemCopy = elem->prev;
 	if (elem->prev->null == 1) {
@@ -59,14 +57,14 @@ void linked_list_remove(Element *elem){
 	elemCopy=NULL;
 }
 
-/* Remove all elements of the list. */
+/* Remove all elements of the list */
 void linked_list_clear(Linked_list *linked_list){
 	while (linked_list->last->null == 0) {
 		linked_list_pop(linked_list);
 	}
 }
 
-/* Free all pointers of the list. */
+/* Free all pointers of the list */
 void linked_list_free(Linked_list *linked_list){
 	linked_list_clear(linked_list);
 	free(linked_list->last);

@@ -3,6 +3,7 @@
 
 #include <MLV/MLV_all.h>
 
+/* Stock each image */
 typedef struct {
 	MLV_Image *star;
 	MLV_Image *spaceship;

@@ -3,15 +3,16 @@
 
 #include "../include/spaceship.h"
 
+/* Shot type*/
 typedef enum {ALLY, ENEMY} Type;
 
 typedef struct {
-	double x;
-	double y;
-	double x_move;
-	double y_move;
-	double rotation;
-	Type type;
+	double x; 			/* x coordinate*/
+	double y; 			/* y coordinate */
+	double x_move; 		/* x_move for each frame */
+	double y_move; 		/* y_move for each frame */
+	double rotation; 	/* Shot rotation to apply */
+	Type type; 			/* Shot type */
 }Shot;
 
 Shot shot_create(int x, int y, double x_move, double y_move, int speed, Type type);
