@@ -76,7 +76,7 @@ void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *e
             for (i = 0; i < hitbox_enemy.size; ++i)
             {
                 for (j= 0; j < hitbox_shot_ally.size; ++j)
-                {
+                { 
                     if (rectangle_in_rectangle(hitbox_enemy.rectangle[i], last_enemy->data.spaceship.x, last_enemy->data.spaceship.y, hitbox_shot_ally.rectangle[j], last_shot->data.shot.x, last_shot->data.shot.y)) {
                         /* If shot hitted the enemy */
                         linked_list_remove(last_shot);
@@ -85,9 +85,13 @@ void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *e
                     }
                 }
             }
-            last_enemy=last_enemy->prev;
+            if(last_enemy->null==0){
+                last_enemy=last_enemy->prev;
+            }
         }  
-        last_shot=last_shot->prev;
+        if(last_shot->null==0){
+            last_shot=last_shot->prev;
+        }
     }
 }
 /* Loop over enemies to see if the spaceship hitted an enemy */
@@ -106,7 +110,9 @@ void spaceship_hit_enemy(Hitbox hitbox_spaceship,Hitbox hitbox_enemy,Spaceship s
                     }
                 }
             }
-        last_enemy=last_enemy->prev;
+        if(last_enemy->null==0){
+            last_enemy=last_enemy->prev;
+        }
     }
 }
 /* Loop over enemy shots to see if a shot hitted the spaceship */
@@ -129,7 +135,9 @@ void spaceship_hit_shot(Hitbox hitbox_spaceship,Hitbox hitbox_shot_enemy,Spacesh
                     }
                 }
             }
-        last_shot=last_shot->prev;
+        if(last_shot->null==0){
+            last_shot=last_shot->prev;
+        }
     }
 }
 

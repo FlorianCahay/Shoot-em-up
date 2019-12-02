@@ -8,7 +8,9 @@ void shots_move(Linked_list *shots, int window_width, int window_height) {
 		if (shot_move(&last->data.shot, window_width, window_height)){
 			linked_list_remove(last);
 		}
-		last = last->prev;
+		if(last->null==0){
+			last = last->prev;
+		}
 	}
 }
 

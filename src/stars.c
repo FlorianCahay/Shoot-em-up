@@ -18,7 +18,9 @@ void stars_move_down(Linked_list * stars,int window_height){
 		if(star_move_down(&last->data.star,window_height)){ /* If star out of screen */
 			linked_list_remove(last);
 		}
-		last=last->prev;
+		if(last->null==0){
+			last=last->prev;
+		}
 	}
 }
 

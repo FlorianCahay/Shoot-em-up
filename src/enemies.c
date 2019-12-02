@@ -22,8 +22,11 @@ void enemies_move_down(Linked_list *enemies, int window_height,int * health) {
 		if(last->data.spaceship.y > window_height){ /* If enemy out of screen */
 			linked_list_remove(last);
 			*health=*health-1;
+			break;
 		}
-		last = last->prev;
+		if(last->null==0){
+			last = last->prev;
+		}
 	}
 }
 /* Create a shot on spawning from each enemy */

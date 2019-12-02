@@ -28,7 +28,10 @@ void events_remove_event(Linked_list * events,MLV_Keyboard_button key){
 	while(last->null==0){ /* Loop over events */
 		if(last->data.key==key){ 
 			linked_list_remove(last);
+			break;
 		}
-		last=last->prev;
+		if(last->null==0){
+			last=last->prev;
+		}
 	}
 }

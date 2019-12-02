@@ -47,6 +47,7 @@ void linked_list_pop(Linked_list *linked_list){
 void linked_list_remove(Element *elem){
 	Element *elemCopy = elem->prev;
 	if (elem->prev->null == 1) {
+		free(elem->prev);
 		elem->null = 1;
 		return;
 	}
