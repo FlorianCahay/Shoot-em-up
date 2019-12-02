@@ -64,79 +64,86 @@ int rectangle_in_rectangle(Rectangle rectangle1,int x1,int y1,Rectangle rectangl
 }
 /* Loop over ally shot to see if they hitted an enemy */
 void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *enemies, Linked_list *shots, int *score){
-    Element *last_shot = shots->last;
-    while (last_shot->null == 0){ /* Loop over shots */
-        if (last_shot->data.shot.type == ENEMY) { /* If not an ally shot */
-            last_shot = last_shot->prev;
+    Element *shot = shots->last;
+    while (shot->null == 0){ /* Loop over shots */
+        if (shot->data.shot.type == ENEMY) { /* If not an ally shot */
+            shot = shot->prev;
             continue;
         }
-        Element *last_enemy = enemies->last;
-        while (last_enemy->null == 0) { /* Loop over enemies */
+        Element *enemy = enemies->last;
+        while (enemy->null == 0) { /* Loop over enemies */
             int i,j;
-            for (i = 0; i < hitbox_enemy.size; ++i)
-            {
-                for (j= 0; j < hitbox_shot_ally.size; ++j)
-                { 
-                    if (rectangle_in_rectangle(hitbox_enemy.rectangle[i], last_enemy->data.spaceship.x, last_enemy->data.spaceship.y, hitbox_shot_ally.rectangle[j], last_shot->data.shot.x, last_shot->data.shot.y)) {
-                        /* If shot hitted the enemy */
-                        linked_list_remove(last_shot);
-                        linked_list_remove(last_enemy);
-                        *score = *score + 25;
+            if( box_in_box(shot->data.shot.x,shot->data.shot.y,get_shot_size(),get_shot_size(),enemy->data.spaceship.x,enemy->data.spaceship.y,get_enemy_width(),get_enemy_height()) ){
+                for (i = 0; i < hitbox_enemy.size; ++i)
+                {
+                    for (j= 0; j < hitbox_shot_ally.size; ++j)
+                    { 
+                        if (rectangle_in_rectangle(hitbox_enemy.rectangle[i], enemy->data.spaceship.x, enemy->data.spaceship.y, hitbox_shot_ally.rectangle[j], shot->data.shot.x, shot->data.shot.y)) {
+                            /* If shot hitted the enemy */
+                            linked_list_remove(shot);
+                            linked_list_remove(enemy);
+                            *score = *score + 25;
+                        }
                     }
                 }
             }
-            if(last_enemy->null==0){
-                last_enemy=last_enemy->prev;
+            if(enemy->null==0){
+                enemy=enemy->prev;
             }
         }  
-        if(last_shot->null==0){
-            last_shot=last_shot->prev;
+        if(shot->null==0){
+            shot=shot->prev;
         }
     }
 }
 /* Loop over enemies to see if the spaceship hitted an enemy */
 void spaceship_hit_enemy(Hitbox hitbox_spaceship,Hitbox hitbox_enemy,Spaceship spaceship,Linked_list * enemies,int * health){
-    Element * last_enemy = enemies->last;
-    while(last_enemy->null==0){ /* Loop over enemies */
+    Element * enemy = enemies->last;
+    while(enemy->null==0){ /* Loop over enemies */
         int i,j;
+        if( box_in_box(enemy->data.spaceship.x,enemy->data.spaceship.y,get_enemy_width(),get_enemy_height(),spaceship.x,spaceship.y,get_spaceship_width(),get_spaceship_height() )){
             for ( i = 0; i < hitbox_enemy.size; ++i)
             {
                 for (j= 0; j < hitbox_spaceship.size; ++j)
                 {
-                    if(rectangle_in_rectangle(hitbox_enemy.rectangle[i],last_enemy->data.spaceship.x,last_enemy->data.spaceship.y,hitbox_spaceship.rectangle[j],spaceship.x,spaceship.y)){
+                    if(rectangle_in_rectangle(hitbox_enemy.rectangle[i],enemy->data.spaceship.x,enemy->data.spaceship.y,hitbox_spaceship.rectangle[j],spaceship.x,spaceship.y)){
                         /* If spaceship hitted an enemy */
-                        linked_list_remove(last_enemy);
+                        linked_list_remove(enemy);
                         --*health;
                     }
                 }
             }
-        if(last_enemy->null==0){
-            last_enemy=last_enemy->prev;
+        }
+        if(enemy->null==0){
+            enemy=enemy->prev;
         }
     }
 }
 /* Loop over enemy shots to see if a shot hitted the spaceship */
 void spaceship_hit_shot(Hitbox hitbox_spaceship,Hitbox hitbox_shot_enemy,Spaceship spaceship,Linked_list * shots,int * health){
-    Element * last_shot = shots->last;
-    while(last_shot->null==0){ /* Loop over shots */
-        if(last_shot->data.shot.type==ALLY){ /* If not an enemy shot */
-            last_shot=last_shot->prev;
+    Element * shot = shots->last;
+    while(shot->null==0){ /* Loop over shots */
+        if(shot->data.shot.type==ALLY){ /* If not an enemy shot */
+            shot=shot->prev;
             continue;
         }
+
         int i,j;
+        if( box_in_box(shot->data.shot.x,shot->data.shot.y,get_shot_size(),get_shot_size(),spaceship.x,spaceship.y,get_spaceship_width(),get_spaceship_height() )){
             for ( i = 0; i < hitbox_shot_enemy.size; ++i)
             {
                 for (j= 0; j < hitbox_spaceship.size; ++j)
                 {
-                    if(rectangle_in_rectangle(hitbox_shot_enemy.rectangle[i],last_shot->data.shot.x,last_shot->data.shot.y,hitbox_spaceship.rectangle[j],spaceship.x,spaceship.y)){
+                    if(rectangle_in_rectangle(hitbox_shot_enemy.rectangle[i],shot->data.shot.x,shot->data.shot.y,hitbox_spaceship.rectangle[j],spaceship.x,spaceship.y)){
                         /* If shot hitted the spaceship */
-                        linked_list_remove(last_shot);
+                        linked_list_remove(shot);
                         --*health;
                     }
                 }
             }
-        if(last_shot->null==0){
-            last_shot=last_shot->prev;
+        }
+        if(shot->null==0){
+            shot=shot->prev;
         }
     }
 }

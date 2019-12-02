@@ -70,14 +70,14 @@ void display_stats(MLV_Image *image, const int score, const int health, const in
 }
 /* Display all stars. */
 void display_stars(Linked_list stars, MLV_Image *image_star) {
-	Element *last = stars.last;
-	while (last->null == 0){
+	Element *star = stars.last;
+	while (star->null == 0){
 		MLV_Image * image_star_copy = MLV_copy_image(image_star);
-		MLV_resize_image(image_star_copy, last->data.star.size, last->data.star.size);
-		MLV_draw_image(image_star_copy, last->data.star.x, last->data.star.y);
+		MLV_resize_image(image_star_copy, star->data.star.size, star->data.star.size);
+		MLV_draw_image(image_star_copy, star->data.star.x, star->data.star.y);
 		MLV_free_image(image_star_copy);
 		image_star_copy = NULL;
-		last = last->prev;
+		star = star->prev;
 	}
 }
 /* Display spaceship. */
@@ -86,26 +86,26 @@ void display_spaceship(MLV_Image *image_spaceship, Spaceship spaceship) {
 }
 /* Display all shots. */
 void display_shots(MLV_Image *image_shot_ally, MLV_Image *image_shot_enemy, Linked_list shots) {
-	Element *last = shots.last;
-	while (last->null == 0) {
-		if (last->data.shot.type == ALLY) {
-			MLV_draw_image(image_shot_ally, last->data.shot.x, last->data.shot.y);	
-		} else if (last->data.shot.type == ENEMY) {
+	Element *shot = shots.last;
+	while (shot->null == 0) {
+		if (shot->data.shot.type == ALLY) {
+			MLV_draw_image(image_shot_ally, shot->data.shot.x, shot->data.shot.y);	
+		} else if (shot->data.shot.type == ENEMY) {
 			MLV_Image *image_shot_copy = MLV_copy_image(image_shot_enemy);
-			MLV_rotate_image(image_shot_copy, last->data.shot.rotation+90);
-			MLV_draw_image(image_shot_copy, last->data.shot.x, last->data.shot.y);
+			MLV_rotate_image(image_shot_copy, shot->data.shot.rotation+90);
+			MLV_draw_image(image_shot_copy, shot->data.shot.x, shot->data.shot.y);
 			MLV_free_image(image_shot_copy);
 			image_shot_copy = NULL;
 		}
-		last = last->prev;
+		shot = shot->prev;
 	}
 }
 /* Display all enemies. */
 void display_enemies(MLV_Image *image_enemy, Linked_list enemies) {
-	Element *last = enemies.last;
-	while (last->null == 0) {
-		MLV_draw_image(image_enemy, last->data.spaceship.x, last->data.spaceship.y);
-		last = last->prev;
+	Element *enemy = enemies.last;
+	while (enemy->null == 0) {
+		MLV_draw_image(image_enemy, enemy->data.spaceship.x, enemy->data.spaceship.y);
+		enemy = enemy->prev;
 	}
 }
 /* Display all items in the window and actualize it. */

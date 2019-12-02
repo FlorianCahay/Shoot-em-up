@@ -16,25 +16,25 @@ void enemies_create_enemy(Linked_list *enemies, int window_width){
 }
 /* Move all enemies down */
 void enemies_move_down(Linked_list *enemies, int window_height,int * health) {
-	Element *last = enemies->last;
-	while (last->null == 0) { /* Loop over enemies */
-		spaceship_move(&last->data.spaceship.y, +1, ENEMY_SPEED);
-		if(last->data.spaceship.y > window_height){ /* If enemy out of screen */
-			linked_list_remove(last);
+	Element *enemy = enemies->last;
+	while (enemy->null == 0) { /* Loop over enemies */
+		spaceship_move(&enemy->data.spaceship.y, +1, ENEMY_SPEED);
+		if(enemy->data.spaceship.y > window_height){ /* If enemy out of screen */
+			linked_list_remove(enemy);
 			*health=*health-1;
 			break;
 		}
-		if(last->null==0){
-			last = last->prev;
+		if(enemy->null==0){
+			enemy = enemy->prev;
 		}
 	}
 }
 /* Create a shot on spawning from each enemy */
 void enemies_create_shot(Linked_list *enemies, Linked_list *shots,Spaceship spaceship,int window_height) {
-	Element *last = enemies->last;
-	while (last->null == 0) { /* Loop over enemies */
-		shots_create_shot(shots, last->data.spaceship, get_enemy_width(), get_enemy_height(),spaceship,window_height,ENEMY);	
-		last = last->prev;
+	Element *enemy = enemies->last;
+	while (enemy->null == 0) { /* Loop over enemies */
+		shots_create_shot(shots, enemy->data.spaceship, get_enemy_width(), get_enemy_height(),spaceship,window_height,ENEMY);	
+		enemy = enemy->prev;
 	}
 }
 

@@ -3,13 +3,13 @@
 
 /* Move all shots */
 void shots_move(Linked_list *shots, int window_width, int window_height) {
-	Element *last = shots->last;
-	while (last->null == 0) {
-		if (shot_move(&last->data.shot, window_width, window_height)){
-			linked_list_remove(last);
+	Element *shot = shots->last;
+	while (shot->null == 0) {
+		if (shot_move(&shot->data.shot, window_width, window_height)){
+			linked_list_remove(shot);
 		}
-		if(last->null==0){
-			last = last->prev;
+		if(shot->null==0){
+			shot = shot->prev;
 		}
 	}
 }

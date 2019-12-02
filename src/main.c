@@ -101,9 +101,9 @@ int main(int argc, char const *argv[])
 				events_remove_event(&events, symbol);
 			}
 		}
-		Element *last_event = events.last;
-		while (last_event->null == 0) {
-			switch (last_event->data.key) {
+		Element *event = events.last;
+		while (event->null == 0) {
+			switch (event->data.key) {
 				case MLV_KEYBOARD_LEFT :
 					spaceship_move_left(&spaceship);
 					break;
@@ -128,7 +128,7 @@ int main(int argc, char const *argv[])
 				default :
 					break;
 			}
-			last_event = last_event->prev;
+			event = event->prev;
 		}
 		/* Create objects */
 		stars_create_star(&stars, get_window_game_width());

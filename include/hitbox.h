@@ -2,6 +2,8 @@
 #define HITBOX_H_INCLUDED
 
 #include "../include/linked_list.h"
+#include "../include/enemies.h"
+#include "../include/shot.h"
 
 /* Top left coordinates and bottom right coordinates */
 typedef struct {

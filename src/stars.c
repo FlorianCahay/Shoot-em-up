@@ -4,22 +4,22 @@
 
 /* Print informations of each star */
 void stars_show(Linked_list stars){
-	Element * last = stars.last;
-	while(last->null==0){ /* Loop over stars */
-		printf("star x:%d y:%d size:%d speed:%d\n",last->data.star.x,last->data.star.y,last->data.star.size,last->data.star.speed);
-		last=last->prev;
+	Element * star = stars.last;
+	while(star->null==0){ /* Loop over stars */
+		printf("star x:%d y:%d size:%d speed:%d\n",star->data.star.x,star->data.star.y,star->data.star.size,star->data.star.speed);
+		star=star->prev;
 	}
 }
 
 /* Move all stars down */
 void stars_move_down(Linked_list * stars,int window_height){
-	Element * last = stars->last;
-	while(last->null==0){ /* Loop over stars */
-		if(star_move_down(&last->data.star,window_height)){ /* If star out of screen */
-			linked_list_remove(last);
+	Element * star = stars->last;
+	while(star->null==0){ /* Loop over stars */
+		if(star_move_down(&star->data.star,window_height)){ /* If star out of screen */
+			linked_list_remove(star);
 		}
-		if(last->null==0){
-			last=last->prev;
+		if(star->null==0){
+			star=star->prev;
 		}
 	}
 }
