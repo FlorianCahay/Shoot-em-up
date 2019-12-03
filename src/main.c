@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <MLV/MLV_all.h>
+#include "../include/animation.h"
 #include "../include/view.h"
 #include "../include/main.h"
 #include "../include/stars.h"
@@ -65,6 +66,26 @@ int main(int argc, char const *argv[])
 	}
 	MLV_free_font(font_choice);
 	
+	/* Animations */
+	MLV_Image *img_destruction = MLV_load_image("src/media/destruction.png");
+	int width_animation, height_animation;
+	MLV_get_image_size(img_destruction, &width_animation, &height_animation);
+	int nb_frames = 20, nb_layers = 1, nb_channels = 0, compteur = 0, width_frame = width_animation/5, height_frame = height_animation/4;    
+    MLV_Image *frame_destruction[nb_frames];
+    int ligne, col, i;    
+    for (ligne = 0; ligne < 4; ligne++) {
+    	for (col = 0; col < 5; col++) {
+    		frame_destruction[compteur] = MLV_copy_partial_image(img_destruction, col*width_frame, ligne*height_frame, width_frame, height_frame);
+    		compteur++;
+    	}
+    }
+	MLV_Animation* animation;
+    animation = MLV_create_animation(nb_frames, nb_layers, nb_channels);
+    for (i = 0; i < nb_frames; i++) {
+    	MLV_add_frame_in_animation(frame_destruction+i, NULL, 5, animation);
+    }
+    MLV_Animation_player *animation_player = MLV_create_animation_player(animation);
+
 	/* Load hitbox for images */
 	Hitbox hitbox_spaceship = get_hitbox("src/hitbox/spaceship_hitbox.txt", get_spaceship_width(), get_spaceship_height());
 	Hitbox hitbox_shot_ally = get_hitbox("src/hitbox/shot_ally_hitbox.txt", get_shot_size(), get_shot_size());
@@ -77,6 +98,7 @@ int main(int argc, char const *argv[])
 	MLV_resize_image_with_proportions(images.spaceship, get_spaceship_width(), get_spaceship_height());
 	MLV_resize_image_with_proportions(images.enemy, get_enemy_width(), -1);
 	/* Initialisation of other variables */
+	Linked_list animations = linked_list_create();
 	Linked_list events = linked_list_create();
 	Linked_list shots = linked_list_create();
 	Linked_list enemies = linked_list_create();
@@ -86,7 +108,7 @@ int main(int argc, char const *argv[])
 	/* MAIN LOOP */
 	while (!quit) {
 		/* Display of the current frame */
-		display_one_frame(images, spaceship, stars, shots, enemies, health, score, MLV_get_time()-start);
+		display_one_frame(images, spaceship, stars, shots, enemies, &animations, health, score, MLV_get_time()-start);
 		if (health <= 0) {
 			display_defeat(font_title);
 			quit = 1;
@@ -144,9 +166,8 @@ int main(int argc, char const *argv[])
 		stars_move_down(&stars, get_window_game_height());
 		shots_move(&shots, get_window_game_width(), get_window_game_height());
 		enemies_move_down(&enemies, get_window_game_height(), &health);
-
 		/* Test hitbox */
-		shot_hit_enemy(hitbox_enemy, hitbox_shot_ally, &enemies, &shots, &score);
+		shot_hit_enemy(hitbox_enemy, hitbox_shot_ally, &enemies, &shots, &score, &animations, animation_player);
 		spaceship_hit_enemy(hitbox_spaceship, hitbox_enemy, spaceship,&enemies, &health);
 		spaceship_hit_shot(hitbox_spaceship, hitbox_shot_enemy, spaceship,&shots, &health);
 
@@ -164,6 +185,13 @@ int main(int argc, char const *argv[])
 	}
 	MLV_wait_seconds(3);
 	MLV_free_font(font_title);
+	MLV_free_animation_player(animation_player);
+    MLV_free_animation(animation);
+    for (i = 0; i < nb_frames; i++) {
+    	MLV_free_image(frame_destruction[i]);
+    }
+    MLV_free_image(img_destruction);
+    linked_list_free(&animations);
 	linked_list_free(&stars);
 	linked_list_free(&events);
 	linked_list_free(&shots);

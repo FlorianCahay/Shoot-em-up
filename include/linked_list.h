@@ -5,6 +5,7 @@
 #include "../include/star.h"
 #include "../include/shot.h"
 #include "../include/spaceship.h"
+#include "../include/animation.h"
 
 /* Different types */
 typedef union{
@@ -12,6 +13,7 @@ typedef union{
 	Star star;
 	Shot shot;
 	Spaceship spaceship;
+	Animation animation;
 } Data;
 
 /* Struct of a list element  */

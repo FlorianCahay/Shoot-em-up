@@ -108,13 +108,33 @@ void display_enemies(MLV_Image *image_enemy, Linked_list enemies) {
 		enemy = enemy->prev;
 	}
 }
+/* Display all animations. */
+void display_animations(Linked_list *animations) {
+	Element *animation = animations->last;
+	while (animation->null == 0) {
+		if ((animation->data.animation.current_frame)/5 < animation->data.animation.total_frame) {
+			MLV_update_animation_player(animation->data.animation.player);
+            MLV_play_animation_player(animation->data.animation.player);
+            MLV_draw_image_from_animation_player(animation->data.animation.player, 0, animation->data.animation.position_x, animation->data.animation.position_y);
+            animation->data.animation.current_frame += 1;
+		} else {
+			MLV_stop_animation_player(animation->data.animation.player);
+        	MLV_rewind_animation_player(animation->data.animation.player);
+        	linked_list_remove(animation);
+		}
+		if (animation->null == 0) {
+			animation = animation->prev;
+		}
+	}
+}
 /* Display all items in the window and actualize it. */
-void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, const int health, const int score, const int time) {
+void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, Linked_list *animations, const int health, const int score, const int time) {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
 	display_shots(images.shot_ally, images.shot_enemy, shots);
 	display_spaceship(images.spaceship,spaceship);
 	display_enemies(images.enemy,enemies);
+	display_animations(animations);
 	display_stats(images.heart, score, health, time);
 	MLV_actualise_window();
 }

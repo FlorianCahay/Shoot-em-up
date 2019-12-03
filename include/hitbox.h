@@ -21,7 +21,7 @@ typedef struct {
 
 Hitbox get_hitbox(char *path, int element_width, int element_height);
 
-void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *enemies, Linked_list *shots, int* score);
+void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *enemies, Linked_list *shots, int* score, Linked_list *animations, MLV_Animation_player *animation_player);
 
 void spaceship_hit_enemy(Hitbox hitbox_spaceship, Hitbox hitbox_enemy, Spaceship spaceship, Linked_list *enemies, int *health);
 

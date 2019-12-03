@@ -1,5 +1,6 @@
 /* Manage hitbox functions */
 #include "../include/hitbox.h"
+#include "../include/animation.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -63,7 +64,7 @@ int rectangle_in_rectangle(Rectangle rectangle1,int x1,int y1,Rectangle rectangl
     return 0;
 }
 /* Loop over ally shot to see if they hitted an enemy */
-void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *enemies, Linked_list *shots, int *score){
+void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *enemies, Linked_list *shots, int *score, Linked_list *animations, MLV_Animation_player *animation_player){
     Element *shot = shots->last;
     while (shot->null == 0){ /* Loop over shots */
         if (shot->data.shot.type == ENEMY) { /* If not an ally shot */
@@ -80,6 +81,10 @@ void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *e
                     { 
                         if (rectangle_in_rectangle(hitbox_enemy.rectangle[i], enemy->data.spaceship.x, enemy->data.spaceship.y, hitbox_shot_ally.rectangle[j], shot->data.shot.x, shot->data.shot.y)) {
                             /* If shot hitted the enemy */
+                            Animation animation = {0, 20, enemy->data.spaceship.x-30, enemy->data.spaceship.y, animation_player};
+                            Data data;
+                            data.animation = animation;
+                            linked_list_append(animations, data);
                             linked_list_remove(shot);
                             linked_list_remove(enemy);
                             *score = *score + 25;
