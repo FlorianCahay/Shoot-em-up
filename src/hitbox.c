@@ -10,7 +10,7 @@ Hitbox get_hitbox(char *path,int element_width,int element_height) {
     FILE *file;
   	file = fopen(path, "r"); /* Open the file */
     if (file == NULL) {
-        printf("Could not open file for get_hitbox\n") ;
+        fprintf(stderr, "Could not open file for get_hitbox: %s\n", path) ;
         exit(EXIT_FAILURE);
     }
 

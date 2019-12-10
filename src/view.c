@@ -26,27 +26,6 @@ int get_window_game_width() {
 void open_new_window() {
 	MLV_create_window("Shoot'em up", "Shoot'em up", get_window_width(), get_window_height());
 }
-/* Close and free window. */
-void close_window() {
-	MLV_free_window();
-}
-/* Load image in memory. */
-MLV_Image* load_image(const char *image_name) {
-	return MLV_load_image(image_name);
-}
-/* Close and free image in memory. */
-void close_image(MLV_Image *image) {
-	MLV_free_image(image);
-}
-/* Close and free all images opened. */
-void close_all_images(Images images) {
-	close_image(images.star);
-	close_image(images.spaceship);
-	close_image(images.heart);
-	close_image(images.shot_ally);
-	close_image(images.shot_enemy);
-	close_image(images.enemy);
-}
 /* Display a defeat message. */
 void display_defeat(MLV_Font* font) {
 	int text_width = 0, text_height = 0;
@@ -128,7 +107,7 @@ void display_animations(Linked_list *animations) {
 	}
 }
 /* Display all items in the window and actualize it. */
-void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, Linked_list *animations, const int health, const int score, const int time) {
+void display_one_frame(Data_Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, Linked_list *animations, const int health, const int score, const int time) {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
 	display_shots(images.shot_ally, images.shot_enemy, shots);
@@ -142,7 +121,7 @@ void display_one_frame(Images images, Spaceship spaceship, Linked_list stars, Li
 /*** MENU ***/
 
 /* Display menu */
-void display_menu(MLV_Font* font_title, MLV_Font* font_choice, Linked_list stars, Images images, const int screen) {
+void display_menu(MLV_Font* font_title, MLV_Font* font_choice, Linked_list stars, Data_Images images, const int screen) {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
 
