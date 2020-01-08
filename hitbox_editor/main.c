@@ -9,54 +9,15 @@ typedef struct
 }
 Rectangle;
 
-void remove_rectangle(int *nb_rectangles)
-{
-	if (*nb_rectangles > 0)
-	{
-		*nb_rectangles -= 1;
-	}
-}
+void remove_rectangle(int *nb_rectangles);
 
-void add_rectangle(Rectangle rectangles[], int *nb_rectangles, Rectangle rectangle)
-{
-	rectangles[*nb_rectangles] = rectangle;
-	*nb_rectangles += 1;
-}
+void add_rectangle(Rectangle rectangles[], int *nb_rectangles, Rectangle rectangle);
 
-void validate(Rectangle rectangles[], int nb_rectangles, int width, int height, MLV_Image *image, char picture_name[])
-{
-	FILE * file;
-	char file_name[50] = "../src/hitbox/";
-	strcat(file_name, picture_name);
-	strcat(file_name, "_hitbox.txt");
-	file = fopen(file_name, "w");
-	fprintf(file, "%d\n", nb_rectangles);
-	int i;
-	for (i = 0; i < nb_rectangles; ++i)
-	{
-		fprintf(file, "%f %f %f %f\n", rectangles[i].x, rectangles[i].y, rectangles[i].x2, rectangles[i].y2);
-		MLV_draw_rectangle_on_image(width *rectangles[i].x, height *rectangles[i].y, width *rectangles[i].x2 - width *rectangles[i].x, height *rectangles[i].y2 - height *rectangles[i].y, MLV_COLOR_GREEN, image);
-	}
-	fclose(file);
-	char path[100] = "../src/media/";
-	strcat(path, picture_name);
-	strcat(path, "_hitbox.png");
-	MLV_save_image_as_bmp(image, path);
-}
+void validate(Rectangle rectangles[], int nb_rectangles, int width, int height, MLV_Image *image, char picture_name[]);
 
-void draw_rectangles(Rectangle rectangles[], int nb_rectangles, int width, int height)
-{
+void draw_rectangles(Rectangle rectangles[], int nb_rectangles, int width, int height);
 
-	int i;
-	for (i = 0; i < nb_rectangles; ++i)
-	{
-		MLV_draw_rectangle(width *rectangles[i].x, height *rectangles[i].y, width *rectangles[i].x2 - width *rectangles[i].x, height *rectangles[i].y2 - height *rectangles[i].y, MLV_COLOR_GREEN);
-	}
-	MLV_actualise_window();
-}
-
-int main(int argc, char
-	const *argv[])
+int main(int argc, char const *argv[])
 {
 	MLV_create_window("hitbox", "hitbox", 4, 4);
 	char picture_name[50];
@@ -108,4 +69,60 @@ int main(int argc, char
 	MLV_free_image(image);
 	MLV_free_window();
 	return 0;
+}
+
+void remove_rectangle(int *nb_rectangles)
+{
+	if (*nb_rectangles > 0)
+	{
+		*nb_rectangles -= 1;
+	}
+}
+
+void add_rectangle(Rectangle rectangles[], int *nb_rectangles, Rectangle rectangle)
+{
+	rectangles[*nb_rectangles] = rectangle;
+	*nb_rectangles += 1;
+}
+
+void validate(Rectangle rectangles[], int nb_rectangles, int width, int height, MLV_Image *image, char picture_name[])
+{
+	FILE * file;
+	char file_name[50] = "../src/hitbox/";
+	strcat(file_name, picture_name);
+	strcat(file_name, "_hitbox.txt");
+	file = fopen(file_name, "w");
+	fprintf(file, "%d\n", nb_rectangles);
+	int i;
+	for (i = 0; i < nb_rectangles; ++i)
+	{
+		fprintf(file, "%f %f %f %f\n", rectangles[i].x, rectangles[i].y, rectangles[i].x2, rectangles[i].y2);
+		MLV_draw_rectangle_on_image(width *rectangles[i].x, height *rectangles[i].y, width *rectangles[i].x2 - width *rectangles[i].x, height *rectangles[i].y2 - height *rectangles[i].y, MLV_COLOR_GREEN, image);
+	}
+	fclose(file);
+	char path[100] = "../src/media/";
+	strcat(path, picture_name);
+	strcat(path, "_hitbox.png");
+	MLV_save_image_as_bmp(image, path);
+}
+
+void draw_rectangles(Rectangle rectangles[], int nb_rectangles, int width, int height)
+{
+	int i;
+	for (i = 0; i < nb_rectangles; ++i)
+	{
+		MLV_draw_rectangle(width *rectangles[i].x, height *rectangles[i].y, width *rectangles[i].x2 - width *rectangles[i].x, height *rectangles[i].y2 - height *rectangles[i].y, MLV_COLOR_GREEN);
+	}
+	MLV_actualise_window();
+}
+
+int file_exists(const char * filename){
+    /* try to open file to read */
+    FILE *file;
+    file=fopen(filename, "r");
+    if (file){
+        fclose(file);
+        return 1;
+    }
+    return 0;
 }

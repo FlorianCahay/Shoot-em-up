@@ -1,0 +1,17 @@
+Le programme permet de créer des rectangles de hitbox pour une image présente dans "../src/media/".
+
+Dans le dossier "../src/hitbox/", les rectangles de l'image sont enregistrés sous forme de coefficients de largeur et de hauteur de l'image.
+La première ligne du fichier renseigne le nombre de rectangles pour l'image.
+Le nom du fichier sera <NOM IMAGE>_hitbox.txt.
+
+Dans le dossier "../src/media/", l'image avec les rectangles dessinés est ajoutée.
+Le nom de cette nouvelle image sera <NOM IMAGE>.hitbox.png.
+
+ATTENTION : si on valide une hitbox elle sera directement sauvegardée même si elle existait déjà.
+
+Le programme ne teste pas si l'image donnée existe, si l'image n'existe pas une segfault sera alors levée.
+
+Les valeurs x y x2 y2 sont des coefficients qui doivent être inférieur à 1.
+
+x y : point nord ouest
+x2 y2 : point sud est

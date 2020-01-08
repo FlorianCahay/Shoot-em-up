@@ -27,3 +27,13 @@ Dossier src :
 	Module star : Gère les fonctions utilent à une étoile
 	Module stars : Gère les fonctions utilent aux étoiles
 
+Pour compiler le programme faire la commande "make" à la racine du projet.
+Ensuite faire la commande "./bin/projet" pour éxécuter le programme.
+
+Lorsque vous lancez le jeu un menu apparaît vous proposant trois options :
+appuyez sur la touche "P" pour jouer.
+appuyez sur la touche "H" pour avoir une aide.
+appuyez sur la touche "Q" pour quitter le programme.
+
+Si vous choisissez de jouer, il vous suffit d'utiliser les flèches pour déplacer votre vaisseau et appuyer sur la barre espace pour tirer. Si vous perdez, le programme va se figer pendant quelques secondes avant de se fermer.
+
