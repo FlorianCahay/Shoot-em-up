@@ -1,56 +1,93 @@
 #include "../include/data.h"
 
-static Data_Images init_images();
+static Data_Images init_images(const char *path);
 static void free_images(Data_Images);
-static Data_Hitbox init_hitbox();
+static Data_Hitbox init_hitbox(const char *path);
 static void free_hitbox(Data_Hitbox);
-static Data_Font init_fonts();
+static Data_Font init_fonts(const char *path);
 static void free_fonts(Data_Font);
 static Data_List init_lists();
 static void free_lists(Data_List);
+static char* get_path_data(const  char *path);
 
-static Data_Images init_images()
+static char* get_path_data(const char* path) {
+	if (strcmp(path, "./bin/project") == 0) {
+		return "";
+	}
+	return "../";
+}
+
+/* Load images. */
+static Data_Images init_images(const char *path)
 {
-	MLV_Image *image_star = MLV_load_image("src/media/star.png");
+	char path_img_star[50];
+	char path_img_spaceship[50];
+	char path_img_heart[50];
+	char path_img_shot_ally[50];
+	char path_img_shot_enemy[50];
+	char path_img_enemy[50];
+	char path_img_destruction[50];
+
+	strcpy(path_img_star, path);
+	strcat(path_img_star, "src/media/star.png");
+	MLV_Image *image_star = MLV_load_image(path_img_star);
 	if (!image_star)
 	{
-		fprintf(stderr, "It was impossible to load the file src/media/star.png.\n");
+		fprintf(stderr, "It was impossible to load the file %s.\n", path_img_star);
 		exit(1);
 	}
-	MLV_Image *image_spaceship = MLV_load_image("src/media/spaceship.png");
+
+	strcpy(path_img_spaceship, path);
+	strcat(path_img_spaceship, "src/media/spaceship.png");
+	MLV_Image *image_spaceship = MLV_load_image(path_img_spaceship);
 	if (!image_spaceship)
 	{
-		fprintf(stderr, "It was impossible to load the file src/media/spaceship.png.\n");
+		fprintf(stderr, "It was impossible to load the file %s.\n", path_img_spaceship);
 		exit(1);
 	}
-	MLV_Image *image_heart = MLV_load_image("src/media/heart.png");
+
+	strcpy(path_img_heart, path);
+	strcat(path_img_heart, "src/media/heart.png");
+	MLV_Image *image_heart = MLV_load_image(path_img_heart);
 	if (!image_heart)
 	{
-		fprintf(stderr, "It was impossible to load the file src/media/heart.png.\n");
+		fprintf(stderr, "It was impossible to load the file %s.\n", path_img_heart);
 		exit(1);
 	}
-	MLV_Image *image_shot_ally = MLV_load_image("src/media/shot_ally.png");
+
+	strcpy(path_img_shot_ally, path);
+	strcat(path_img_shot_ally, "src/media/shot_ally.png");
+	MLV_Image *image_shot_ally = MLV_load_image(path_img_shot_ally);
 	if (!image_shot_ally)
 	{
-		fprintf(stderr, "It was impossible to load the file src/media/shot_ally.png.\n");
+		fprintf(stderr, "It was impossible to load the file %s.\n", path_img_shot_ally);
 		exit(1);
 	}
-	MLV_Image *image_shot_enemy = MLV_load_image("src/media/shot_enemy.png");
+
+	strcpy(path_img_shot_enemy, path);
+	strcat(path_img_shot_enemy, "src/media/shot_enemy.png");
+	MLV_Image *image_shot_enemy = MLV_load_image(path_img_shot_enemy);
 	if (!image_shot_enemy)
 	{
-		fprintf(stderr, "It was impossible to load the file src/media/shot_enemy.png.\n");
+		fprintf(stderr, "It was impossible to load the file %s.\n", path_img_shot_enemy);
 		exit(1);
 	}
-	MLV_Image *image_enemy = MLV_load_image("src/media/enemy.png");
+
+	strcpy(path_img_enemy, path);
+	strcat(path_img_enemy, "src/media/enemy.png");
+	MLV_Image *image_enemy = MLV_load_image(path_img_enemy);
 	if (!image_enemy)
 	{
-		fprintf(stderr, "It was impossible to load the file src/media/enemy.png.\n");
+		fprintf(stderr, "It was impossible to load the file %s.\n", path_img_enemy);
 		exit(1);
 	}
-	MLV_Image *image_ani_destruction = MLV_load_image("src/media/destruction.png");
+
+	strcpy(path_img_destruction, path);
+	strcat(path_img_destruction, "src/media/destruction.png");
+	MLV_Image *image_ani_destruction = MLV_load_image(path_img_destruction);
 	if (!image_ani_destruction)
 	{
-		fprintf(stderr, "It was impossible to load the file src/media/destruction.png.\n");
+		fprintf(stderr, "It was impossible to load the file %s.\n", path_img_destruction);
 		exit(1);
 	}
 
@@ -67,7 +104,7 @@ static Data_Images init_images()
 	};
 	return images;
 }
-
+/* Free images. */
 static void free_images(Data_Images images)
 {
 	MLV_free_image(images.star);
@@ -78,18 +115,34 @@ static void free_images(Data_Images images)
 	MLV_free_image(images.enemy);
 	MLV_free_image(images.ani_destruction);
 }
-
-static Data_Hitbox init_hitbox()
+/* Load hitbox. */
+static Data_Hitbox init_hitbox(const char *path)
 {
-	Hitbox hitbox_spaceship = get_hitbox("src/hitbox/spaceship_hitbox.txt", get_spaceship_width(), get_spaceship_height());
-	Hitbox hitbox_shot_ally = get_hitbox("src/hitbox/shot_ally_hitbox.txt", get_shot_size(), get_shot_size());
-	Hitbox hitbox_shot_enemy = get_hitbox("src/hitbox/shot_enemy_hitbox.txt", get_shot_size(), get_shot_size());
-	Hitbox hitbox_enemy = get_hitbox("src/hitbox/enemy_hitbox.txt", get_enemy_width(), get_enemy_height());
+	char path_hitbox_spaceship[50];
+	char path_hitbox_shot_ally[50];
+	char path_hitbox_shot_enemy[50];
+	char path_hitbox_enemy[50];
+
+	strcpy(path_hitbox_spaceship, path);
+	strcat(path_hitbox_spaceship, "src/hitbox/spaceship_hitbox.txt");
+	Hitbox hitbox_spaceship = get_hitbox(path_hitbox_spaceship, get_spaceship_width(), get_spaceship_height());
+
+	strcpy(path_hitbox_shot_ally, path);
+	strcat(path_hitbox_shot_ally, "src/hitbox/shot_ally_hitbox.txt");
+	Hitbox hitbox_shot_ally = get_hitbox(path_hitbox_shot_ally, get_shot_size(), get_shot_size());
+
+	strcpy(path_hitbox_shot_enemy, path);
+	strcat(path_hitbox_shot_enemy, "src/hitbox/shot_enemy_hitbox.txt");
+	Hitbox hitbox_shot_enemy = get_hitbox(path_hitbox_shot_enemy, get_shot_size(), get_shot_size());
+
+	strcpy(path_hitbox_enemy, path);
+	strcat(path_hitbox_enemy, "src/hitbox/enemy_hitbox.txt");
+	Hitbox hitbox_enemy = get_hitbox(path_hitbox_enemy, get_enemy_width(), get_enemy_height());
 
 	Data_Hitbox hitbox = { hitbox_spaceship, hitbox_shot_ally, hitbox_shot_enemy, hitbox_enemy };
 	return hitbox;
 }
-
+/* Free hitbox. */
 static void free_hitbox(Data_Hitbox hitbox)
 {
 	hitbox_free(hitbox.spaceship.rectangle);
@@ -97,22 +150,30 @@ static void free_hitbox(Data_Hitbox hitbox)
 	hitbox_free(hitbox.shot_enemy.rectangle);
 	hitbox_free(hitbox.enemy.rectangle);
 }
-
-static Data_Font init_fonts()
+/* Load fonts. */
+static Data_Font init_fonts(const char *path)
 {
-	MLV_Font *menu_title = MLV_load_font("src/fonts/Orbitron-Bold.ttf", 50);
-	MLV_Font *menu_choices = MLV_load_font("src/fonts/Orbitron-Regular.ttf", 25);
+	char path_font_menu_title[50];
+	char path_font_menu_choices[50];
+
+	strcpy(path_font_menu_title, path);
+	strcat(path_font_menu_title, "src/fonts/Orbitron-Bold.ttf");
+	MLV_Font *menu_title = MLV_load_font(path_font_menu_title, 50);
+
+	strcpy(path_font_menu_choices, path);
+	strcat(path_font_menu_choices, "src/fonts/Orbitron-Regular.ttf");
+	MLV_Font *menu_choices = MLV_load_font(path_font_menu_choices, 25);
 
 	Data_Font fonts = { menu_title, menu_choices };
 	return fonts;
 }
-
+/* Free fonts. */
 static void free_fonts(Data_Font fonts)
 {
 	MLV_free_font(fonts.menu_title);
 	MLV_free_font(fonts.menu_choices);
 }
-
+/* Initialize linked lists. */
 static Data_List init_lists()
 {
 	Linked_list stars = linked_list_create();
@@ -124,7 +185,7 @@ static Data_List init_lists()
 	Data_List lists = { stars, animations, events, shots, enemies };
 	return lists;
 }
-
+/* Free linked lists. */
 static void free_lists(Data_List lists)
 {
 	linked_list_free(&(lists.animations));
@@ -133,7 +194,7 @@ static void free_lists(Data_List lists)
 	linked_list_free(&(lists.shots));
 	linked_list_free(&(lists.enemies));
 }
-
+/* Free animation player. */
 static void free_animation_players(Data_List lists)
 {
 	Element *animation = lists.animations.last;
@@ -143,18 +204,19 @@ static void free_animation_players(Data_List lists)
 		animation = animation->prev;
 	}
 }
-
-Data_Game init_data_game()
+/* Initialize data for game. */
+Data_Game init_data_game(const char *path)
 {
-	Data_Images images = init_images();
-	Data_Hitbox hitbox = init_hitbox();
-	Data_Font fonts = init_fonts();
+	char *path_directory = get_path_data(path);
+	Data_Images images = init_images(path_directory);
+	Data_Hitbox hitbox = init_hitbox(path_directory);
+	Data_Font fonts = init_fonts(path_directory);
 	Data_List lists = init_lists();
 
 	Data_Game data = { images, hitbox, fonts, lists };
 	return data;
 }
-
+/* Free data. */
 void free_data(Data_Game data)
 {
 	free_images(data.images);

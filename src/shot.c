@@ -6,7 +6,7 @@
 #define PI 3.14159265
 
 /*Return a shot with all his properties set */
-Shot shot_create(int x, int y, double x_move, double y_move, int speed, Type type)
+Shot shot_create(const double x, const double y, double x_move, double y_move, const int speed, const Type type)
 {
 	Shot shot = {};
 	shot.x = x;
@@ -22,7 +22,7 @@ Shot shot_create(int x, int y, double x_move, double y_move, int speed, Type typ
 }
 
 /*Move down a shot and return 1 if the shot is out of the screen, return 0 otherwise */
-int shot_move(Shot *shot, int width, int height)
+int shot_move(Shot *shot, const int width, const int height)
 {
 	shot->x += shot->x_move;
 	shot->y += shot->y_move;

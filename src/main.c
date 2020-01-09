@@ -14,9 +14,10 @@
 #include "../include/hitbox.h"
 #include "../include/data.h"
 
-int main(int argc, char
-	const *argv[])
+int main(int argc, char	const *argv[])
 {
+	char path[30];
+	strcpy(path, argv[0]);
 	open_new_window();
 	MLV_change_frame_rate(120);
 	/*Initialisation of some variables for the menu display */
@@ -24,7 +25,7 @@ int main(int argc, char
 	MLV_Button_state state;
 	MLV_Event event;
 	int play = 0, menu = 1, quit = 0, health = 3, score = 0, timer_shot = 0, timer_enemy = 0, timer_shot_enemy = 0, wait=0;
-	Data_Game data_game = init_data_game();
+	Data_Game data_game = init_data_game(path);
 
 	/*Display menu */
 	while (!play)
@@ -127,7 +128,7 @@ int main(int argc, char
 				case MLV_KEYBOARD_SPACE:
 					if (timer_shot == 50)
 					{
-						shots_create_shot(&(data_game.lists.shots), spaceship, get_spaceship_width(), get_spaceship_height(), spaceship, get_window_game_height(), 0);
+						shots_create_shot(&(data_game.lists.shots), spaceship, get_spaceship_width(), get_spaceship_height(), spaceship, 0);
 						timer_shot = 0;
 					}
 					break;
@@ -148,7 +149,7 @@ int main(int argc, char
 		}
 		if (timer_shot_enemy == 200)
 		{
-			enemies_create_shot(&(data_game.lists.enemies), &(data_game.lists.shots), spaceship, get_window_game_height());
+			enemies_create_shot(&(data_game.lists.enemies), &(data_game.lists.shots), spaceship);
 			timer_shot_enemy = 0;
 		}
 		/*Moves of the entities on the board */

@@ -7,19 +7,19 @@ typedef struct{
 	int y;
 } Spaceship;
 
-Spaceship spaceship_create(int x, int y);
+Spaceship spaceship_create(const int x, const int y);
 
-void spaceship_move(int *point, int value, int speed);
+void spaceship_move(int *point, const int value, const int speed);
 
 void spaceship_move_up(Spaceship *spaceship);
 
-void spaceship_move_down(Spaceship *spaceship, int window_height);
+void spaceship_move_down(Spaceship *spaceship, const int window_height);
 
 void spaceship_move_left(Spaceship *spaceship);
 
-void spaceship_move_right(Spaceship *spaceship, int window_width);
+void spaceship_move_right(Spaceship *spaceship, const int window_width);
 
-void spaceship_show(Spaceship spaceship);
+void spaceship_show(const Spaceship spaceship);
 
 int get_spaceship_width();
 

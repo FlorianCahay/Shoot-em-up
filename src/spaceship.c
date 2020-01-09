@@ -6,7 +6,7 @@
 #define SPACESHIP_SPEED 5
 
 /*Create a spaceship with x and y coordinates. */
-Spaceship spaceship_create(int x, int y)
+Spaceship spaceship_create(const int x, const int y)
 {
 	Spaceship spaceship = { 
 		x,
@@ -16,7 +16,7 @@ Spaceship spaceship_create(int x, int y)
 }
 
 /*Add value to a point of the spaceship. */
-void spaceship_move(int *point, int value, int speed)
+void spaceship_move(int *point, const int value, const int speed)
 {
 	*point = *point + value * speed;
 }
@@ -32,7 +32,7 @@ void spaceship_move_up(Spaceship *spaceship)
 }
 
 /*Move the spaceship to the down. */
-void spaceship_move_down(Spaceship *spaceship, int window_height)
+void spaceship_move_down(Spaceship *spaceship, const int window_height)
 {
 	if (spaceship->y + 1 > window_height - get_spaceship_height())
 	{
@@ -52,7 +52,7 @@ void spaceship_move_left(Spaceship *spaceship)
 }
 
 /*Move the spaceship to the right. */
-void spaceship_move_right(Spaceship *spaceship, int window_width)
+void spaceship_move_right(Spaceship *spaceship, const int window_width)
 {
 	if (spaceship->x + 1 > window_width - get_spaceship_width())
 	{
@@ -62,7 +62,7 @@ void spaceship_move_right(Spaceship *spaceship, int window_width)
 }
 
 /*Show coordinates of the spaceship. */
-void spaceship_show(Spaceship spaceship)
+void spaceship_show(const Spaceship spaceship)
 {
 	printf("spaceship x:%d y:%d\n", spaceship.x, spaceship.y);
 }

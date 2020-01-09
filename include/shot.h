@@ -15,8 +15,8 @@ typedef struct {
 	Type type; 			/* Shot type */
 }Shot;
 
-Shot shot_create(int x, int y, double x_move, double y_move, int speed, Type type);
-int shot_move(Shot *shot, int width, int height);
+Shot shot_create(const double x, const double y, double x_move, double y_move, const int speed, const Type type);
+int shot_move(Shot *shot, const int width, const int height);
 int get_shot_size();
 
 #endif

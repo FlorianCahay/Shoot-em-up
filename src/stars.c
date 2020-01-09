@@ -3,7 +3,7 @@
 #include "../include/linked_list.h"
 
 /*Print informations of each star */
-void stars_show(Linked_list stars)
+void stars_show(const Linked_list stars)
 {
 	Element *star = stars.last;
 	while (star->null == 0)
@@ -14,7 +14,7 @@ void stars_show(Linked_list stars)
 }
 
 /*Move all stars down */
-void stars_move_down(Linked_list *stars, int window_height)
+void stars_move_down(Linked_list *stars, const int window_height)
 {
 	Element *star = stars->last;
 	while (star->null == 0)
@@ -31,7 +31,7 @@ void stars_move_down(Linked_list *stars, int window_height)
 }
 
 /*Add a star to the stars if rand%4==0 */
-void stars_create_star(Linked_list *stars, int window_width)
+void stars_create_star(Linked_list *stars, const int window_width)
 {
 	if (rand() % 4 == 0)
 	{

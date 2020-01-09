@@ -19,7 +19,7 @@ typedef struct {
 	Rectangle *rectangle;
 } Hitbox;
 
-Hitbox get_hitbox(char *path, int element_width, int element_height);
+Hitbox get_hitbox(char *path, const int element_width, const int element_height);
 
 void shot_hit_enemy(Hitbox hitbox_enemy, Hitbox hitbox_shot_ally, Linked_list *enemies, Linked_list *shots, int *score, Linked_list *animations, MLV_Animation * animation);
 

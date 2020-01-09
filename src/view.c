@@ -31,7 +31,7 @@ void open_new_window()
 	MLV_create_window("Shoot'em up", "Shoot'em up", get_window_width(), get_window_height());
 }
 /*Display a defeat message. */
-void display_defeat(MLV_Font *font)
+void display_defeat(const MLV_Font *font)
 {
 	int text_width = 0, text_height = 0;
 	MLV_get_size_of_text_with_font("DEFEAT", &text_width, &text_height, font);
@@ -39,7 +39,7 @@ void display_defeat(MLV_Font *font)
 	MLV_actualise_window();
 }
 /*Display number of FPS on the top corner left, health bar at the bottom left and score. */
-void display_stats(MLV_Image *image, const int score, const int health, const int time)
+void display_stats(const MLV_Image *image, const int score, const int health, const int time)
 {
 	MLV_draw_filled_rectangle(0, get_window_game_height(), get_window_game_width(), get_window_height(), MLV_COLOR_WHITE);
 	int fps = MLV_get_frame_rate();
@@ -55,7 +55,7 @@ void display_stats(MLV_Image *image, const int score, const int health, const in
 
 }
 /*Display all stars. */
-void display_stars(Linked_list stars, MLV_Image *image_star)
+void display_stars(Linked_list stars,const MLV_Image *image_star)
 {
 	Element *star = stars.last;
 	while (star->null == 0)
@@ -69,12 +69,12 @@ void display_stars(Linked_list stars, MLV_Image *image_star)
 	}
 }
 /*Display spaceship. */
-void display_spaceship(MLV_Image *image_spaceship, Spaceship spaceship)
+void display_spaceship(const MLV_Image *image_spaceship, const Spaceship spaceship)
 {
 	MLV_draw_image(image_spaceship, spaceship.x, spaceship.y);
 }
 /*Display all shots. */
-void display_shots(MLV_Image *image_shot_ally, MLV_Image *image_shot_enemy, Linked_list shots)
+void display_shots(const MLV_Image *image_shot_ally, const MLV_Image *image_shot_enemy, Linked_list shots)
 {
 	Element *shot = shots.last;
 	while (shot->null == 0)
@@ -95,7 +95,7 @@ void display_shots(MLV_Image *image_shot_ally, MLV_Image *image_shot_enemy, Link
 	}
 }
 /*Display all enemies. */
-void display_enemies(MLV_Image *image_enemy, Linked_list enemies)
+void display_enemies(const MLV_Image *image_enemy, Linked_list enemies)
 {
 	Element *enemy = enemies.last;
 	while (enemy->null == 0)
@@ -129,7 +129,7 @@ void display_animations(Linked_list *animations)
 	}
 }
 /*Display all items in the window and actualize it. */
-void display_one_frame(Data_Images images, Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, Linked_list *animations, const int health, const int score, const int time)
+void display_one_frame(const Data_Images images, const Spaceship spaceship, Linked_list stars, Linked_list shots, Linked_list enemies, Linked_list *animations, const int health, const int score, const int time)
 {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
@@ -144,7 +144,7 @@ void display_one_frame(Data_Images images, Spaceship spaceship, Linked_list star
 /***MENU ***/
 
 /*Display menu */
-void display_menu(MLV_Font *font_title, MLV_Font *font_choice, Linked_list stars, Data_Images images, const int screen)
+void display_menu(const MLV_Font *font_title, const MLV_Font *font_choice, Linked_list stars, const Data_Images images, const int screen)
 {
 	MLV_clear_window(MLV_COLOR_BLACK);
 	display_stars(stars, images.star);
@@ -163,7 +163,7 @@ void display_menu(MLV_Font *font_title, MLV_Font *font_choice, Linked_list stars
 	MLV_actualise_window();
 }
 
-void display_home(MLV_Font *font_title, MLV_Font *font_choice)
+void display_home(const MLV_Font *font_title, const MLV_Font *font_choice)
 {
 	int text_title_width = 0, text_title_height = 0, text_choice_width = 0, text_choice_height = 0;
 	MLV_get_size_of_text_with_font("Shoot'em up", &text_title_width, &text_title_height, font_title);
@@ -174,7 +174,7 @@ void display_home(MLV_Font *font_title, MLV_Font *font_choice)
 	MLV_draw_text_with_font((BLOC_WIDTH *5) - (text_choice_width / 2), (BLOC_HEIGHT *6) - (text_choice_height / 2), "H - Help", font_choice, MLV_COLOR_RED);
 	MLV_draw_text_with_font((BLOC_WIDTH *5) - (text_choice_width / 2), (BLOC_HEIGHT *7) - (text_choice_height / 2), "Q - Quit", font_choice, MLV_COLOR_RED);
 }
-void display_help(MLV_Font *font_title, MLV_Font *font_text)
+void display_help(const MLV_Font *font_title, const MLV_Font *font_text)
 {
 	char msg[] = "Utilisez les flèches pour vous déplacer\nAppuyez sur espace pour tirer\nAppuyer sur Q pour quitter";
 
@@ -186,7 +186,7 @@ void display_help(MLV_Font *font_title, MLV_Font *font_text)
 	display_menu_bar(font_text);
 }
 
-void display_menu_bar(MLV_Font *font_text)
+void display_menu_bar(const MLV_Font *font_text)
 {
 	int text_width = 0;
 	MLV_get_size_of_text_with_font("A - AAAA", &text_width, NULL, font_text);

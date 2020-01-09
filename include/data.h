@@ -42,7 +42,7 @@ typedef struct {
 	Data_List lists;
 } Data_Game;
 
-Data_Game init_data_game();
+Data_Game init_data_game(const char *path);
 void free_data(Data_Game);
 
 #endif

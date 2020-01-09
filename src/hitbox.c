@@ -4,8 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static int box_in_box(const int x1, const int y1, const int width1, const int height1, const int x2, const int y2, const int width2, const int height2);
+
 /*Return a Hitbox for the file path given */
-Hitbox get_hitbox(char *path, int element_width, int element_height)
+Hitbox get_hitbox(char *path, const int element_width, const int element_height)
 {
     int size;
     FILE * file;
@@ -34,13 +36,8 @@ Hitbox get_hitbox(char *path, int element_width, int element_height)
     };
     return hitbox;
 }
-/*Print rectangle values */
-void rectangle_show(Rectangle rectangle)
-{
-    printf("%f %f %f %f\n", rectangle.x, rectangle.y, rectangle.x2, rectangle.y2);
-}
 /*Add x and y values to each rectangle coordinates */
-Rectangle rectangle_translate(Rectangle rectangle, int x, int y)
+Rectangle rectangle_translate(Rectangle rectangle, const int x, const int y)
 {
     rectangle.x += x;
     rectangle.x2 += x;
@@ -49,7 +46,7 @@ Rectangle rectangle_translate(Rectangle rectangle, int x, int y)
     return rectangle;
 }
 /*If box is in a box return 1, return 0 otherwise */
-int box_in_box(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2)
+static int box_in_box(const int x1, const int y1, const int width1, const int height1, const int x2, const int y2, const int width2, const int height2)
 {
     if (x1 < x2 + width2 && x1 + width1 > x2 && y1 < y2 + height2 && y1 + height1 > y2)
     {
@@ -58,7 +55,7 @@ int box_in_box(int x1, int y1, int width1, int height1, int x2, int y2, int widt
     return 0;
 }
 /*If a rectangle1 is in a rectangle2 return 1, return 0 otherwise */
-int rectangle_in_rectangle(Rectangle rectangle1, int x1, int y1, Rectangle rectangle2, int x2, int y2)
+int rectangle_in_rectangle(Rectangle rectangle1, const int x1, const int y1, Rectangle rectangle2, const int x2, const int y2)
 {
     rectangle1 = rectangle_translate(rectangle1, x1, y1);
     rectangle2 = rectangle_translate(rectangle2, x2, y2);

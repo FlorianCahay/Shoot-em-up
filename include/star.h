@@ -9,7 +9,7 @@ typedef struct {
 	int speed;
 } Star;
 
-Star star_create(int x, int y, int size, int speed);
-int star_move_down(Star *tar, int window_height);
+Star star_create(const int x, const int y, const int size, const int speed);
+int star_move_down(Star *tar, const int window_height);
 
 #endif
